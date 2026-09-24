@@ -25,3 +25,11 @@
 - Extends static release checks to unique metadata, graph validity, internal link targets and sitemap/build parity.
 - Documents webmaster ownership verification; no invented contact details, rankings, study outcomes, external services or paid tooling.
 - Preserves the organism animation, starfield, logos and GitHub Pages-only deployment architecture.
+
+## v0.7.0 — Controlled public rebrand
+
+- Public-facing company name changed to **AURYVETH** across site copy, metadata, structured data, navigation labels and downloadable-document references.
+- Existing abstract emblem retained; new AURYVETH horizontal wordmarks replace the old wordmark.
+- Open Graph/social cover images and the Founder Constitution are regenerated during build under AURYVETH filenames.
+- Current GitHub organization, repository and Pages host remain unchanged as temporary technical infrastructure.
+- JSON-LD no longer advertises the transitional GitHub organization as a sameAs identity until that account is renamed.
