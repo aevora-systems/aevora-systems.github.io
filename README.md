@@ -1,6 +1,6 @@
 # AURYVETH Website — v0.7.0 (controlled public rebrand)
 
-Public brand: **AURYVETH**. Transitional deployment target: **https://aevora-systems.github.io/**. The GitHub organization/repository retain their existing technical names until a separate controlled rename.
+Official deployment target: **https://auryveth.github.io/**. GitHub organization: **https://github.com/auryveth**.
 
 ## Purpose
 
@@ -25,11 +25,11 @@ The first successful `npm install` will create `package-lock.json`. **Commit it*
 
 The workflow explicitly grants the `pages: write` and `id-token: write` permissions required by `actions/deploy-pages`.
 
-1. In the **AURYVETH** organization, create the **public** repository named exactly `aevora-systems.github.io`.
+1. In the **AURYVETH** organization, create the **public** repository named exactly `auryveth.github.io`.
 2. Upload or push **the contents of this project folder** to the repository root (not the outer ZIP folder).
 3. Push to `main`.
 4. In repository **Settings → Pages**, set build/deployment source to **GitHub Actions**.
-5. Watch **Actions → Publish AURYVETH website**. A successful run should publish at https://aevora-systems.github.io/.
+5. Watch **Actions → Publish AURYVETH website**. A successful run should publish at https://auryveth.github.io/.
 6. Confirm canonical links and sitemap use this origin. GitHub Pages may take time to become publicly available.
 
 Do not create a CNAME until an actual domain is purchased and configured. To move to a custom domain later, configure Pages/DNS, add `public/CNAME`, and set `PUBLIC_SITE_URL` in the build environment to the verified HTTPS origin.
