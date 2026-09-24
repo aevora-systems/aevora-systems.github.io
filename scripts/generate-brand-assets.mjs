@@ -29,4 +29,4 @@ const cover=`<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="500">
 </svg>`;
 await sharp(Buffer.from(cover)).jpeg({quality:88,progressive:true}).toFile(path.join(publicDir,'assets/social/Auryveth_Social_Cover_1500x500.jpg'));
 
-console.log('Generated AURYVETH social images');\n
+console.log('Generated AURYVETH social images');
