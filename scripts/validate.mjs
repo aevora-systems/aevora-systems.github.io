@@ -23,7 +23,7 @@ for(const asset of [
  if(!fs.existsSync(asset))throw Error(`Missing ${asset}`);
 }
 const src=fs.readFileSync('src/data/site.ts','utf8');
-if(!src.includes('aevora-systems.github.io'))throw Error('Wrong transitional GitHub Pages origin');
+if(!src.includes('auryveth.github.io'))throw Error('Wrong AURYVETH GitHub Pages origin');
 if(!src.includes("name: 'AURYVETH'"))throw Error('Public brand not switched to AURYVETH');
 if(src.includes('hello@'))throw Error('Invented email');
 
@@ -42,4 +42,4 @@ for(const file of ['src/components/SEOHead.astro','src/content/pages/knowledge-i
  const t=fs.readFileSync(file,'utf8');
  if(!t.includes('Business')&&!t.includes('business'))throw Error(`Suspect empty content: ${file}`);
 }
-console.log('PASS source: AURYVETH naming, core pages, 5 knowledge pages, brand sources and transitional origin');
+console.log('PASS source: AURYVETH naming, core pages, 5 knowledge pages, brand sources and AURYVETH origin');
