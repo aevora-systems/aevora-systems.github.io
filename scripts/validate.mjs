@@ -30,12 +30,14 @@ if(src.includes('hello@'))throw Error('Invented email');
 function walk(dir){
  return fs.readdirSync(dir,{withFileTypes:true}).flatMap(d=>d.isDirectory()?walk(path.join(dir,d.name)):[path.join(dir,d.name)]);
 }
+const residualBrandFiles=[];
 for(const root of ['src','public']){
  for(const file of walk(root).filter(f=>/\.(?:astro|html|ts|js|css|json|svg|txt)$/i.test(f))){
    const t=fs.readFileSync(file,'utf8');
-   if(/\b(?:AEVORA|Aevora)\b/.test(t))throw Error(`Old public brand remains in ${file}`);
+   if(/\b(?:AEVORA|Aevora)\b/.test(t))residualBrandFiles.push(file);
  }
 }
+if(residualBrandFiles.length)throw Error('Old public brand remains in: '+residualBrandFiles.join(', '));
 for(const file of ['src/components/SEOHead.astro','src/content/pages/knowledge-index.html']){
  const t=fs.readFileSync(file,'utf8');
  if(!t.includes('Business')&&!t.includes('business'))throw Error(`Suspect empty content: ${file}`);
