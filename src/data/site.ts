@@ -1,12 +1,12 @@
 // Single source of truth for the public site and its build-time search metadata.
 export const site = {
   name: 'AURYVETH',
-  url: 'https://aevora-systems.github.io',
+  url: 'https://auryveth.github.io',
   tagline: 'We build. We learn. We evolve — toward a better future.',
   description: 'AURYVETH develops governed digital business organisms under explicit human authority.',
   foundingDate: '2026-09-23',
   founder: 'Jeremiah Wong Zhi Qi',
-  github: 'https://github.com/aevora-systems',
+  github: 'https://github.com/auryveth',
   logo: '/assets/logos/Auryveth_Logo_Horizontal_Corporate.svg',
   socialImage: '/assets/social/Auryveth_OpenGraph_1200x630.jpg'
   // No addresses, registration identifiers, emails or product claims until publicly verified.
