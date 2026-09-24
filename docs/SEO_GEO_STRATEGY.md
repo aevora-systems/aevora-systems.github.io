@@ -1,6 +1,6 @@
 # AURYVETH SEO / GEO release strategy — v0.6
 
-**Scope:** official static website at https://aevora-systems.github.io/. The first-party material describes the actual founding record, planned operating model and research direction. It is not evidence of a deployed generalized autonomous organism.
+**Scope:** official static website at https://auryveth.github.io/. The first-party material describes the actual founding record, planned operating model and research direction. It is not evidence of a deployed generalized autonomous organism.
 
 ## 1. What this upgrade actually does
 
@@ -17,7 +17,7 @@ AURYVETH is a technology and research company developing governed digital busine
 
 Use clear distinctions throughout: *definition*, *proposed architecture*, *planned validation*, *published founding record*, and *observed experimental result*. A proposal must never be represented as measured production capability. Avoid claims about clients, trials, incorporation/registration, funding, performance, pricing, independent recognition, private dataset results, autonomous agency or press coverage unless documented and approved.
 
-The founder's public name is Jeremiah Wong Zhi Qi. The first-party founding record is the versioned Founder Constitution PDF. Only the verified GitHub organization is used as `sameAs`; do not populate fabricated social profiles, addresses, registration data or email addresses.
+The founder's public name is Jeremiah Wong Zhi Qi. The first-party founding record is the versioned Founder Constitution PDF. The verified AURYVETH GitHub organization is the only repository identity used as `sameAs`; do not populate fabricated social profiles, addresses, registration data or email addresses.
 
 ## 3. AI search and conventional search
 
@@ -32,7 +32,7 @@ Reference documentation:
 
 ## 4. Owner-only launch tasks
 
-1. Open https://search.google.com/search-console/ and verify ownership of the exact live URL (URL prefix is adequate for this GitHub Pages origin). If an HTML verification file is required, commit it to `public/`. Never copy another user's token or share account credentials. Submit `https://aevora-systems.github.io/sitemap.xml`.
+1. Open https://search.google.com/search-console/ and verify ownership of the exact live URL (URL prefix is adequate for this GitHub Pages origin). If an HTML verification file is required, commit it to `public/`. Never copy another user's token or share account credentials. Submit `https://auryveth.github.io/sitemap.xml`.
 2. Open https://www.bing.com/webmasters/ and verify the same website. Submit the sitemap there too. Search-engine verification is not performed just because the repository builds.
 3. Use Google URL Inspection and Bing's URL tools to check indexability and canonical choices after deployment. New site indexing can take time; do not promise rankings or search appearances.
 4. Monitor coverage, actual search terms, crawl errors, and AI-search appearances where reporting is available. Keep a dated record of changes and compare meaningful periods.
