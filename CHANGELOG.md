@@ -2,7 +2,7 @@
 
 ## v0.5.0 — GitHub Pages production-source prototype
 
-- Astro source architecture targeting aevora-systems.github.io.
+- Astro source architecture targeting the previous GitHub Pages namespace.
 - Shared layout/header/footer/SEO metadata components.
 - Original v0.4.2 Canvas organism and starfield preserved as browser assets.
 - Static sitemap/robots and three clean, evidence-bounded knowledge pages.
@@ -13,7 +13,7 @@
 ## v0.5.1 — GitHub Pages deployment correction
 
 - Added required `pages: write` and `id-token: write` permissions to GitHub Actions, in addition to `contents: read`.
-- Deployment target remains `aevora-systems/aevora-systems.github.io` with site root `/`.
+- Deployment target remained the previous organization-root GitHub Pages repository with site root `/`.
 - No change to visual identity, animation or SEO content.
 
 ## v0.6.0 — SEO / GEO foundation and first-party knowledge cluster
