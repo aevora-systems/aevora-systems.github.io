@@ -28,7 +28,9 @@ jobs:
           node-version: '24'
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: |
+          npm install --no-audit --no-fund
+          python -m pip install --disable-pip-version-check pymupdf==1.26.4
 
       - name: Validate source
         run: npm run check:source
