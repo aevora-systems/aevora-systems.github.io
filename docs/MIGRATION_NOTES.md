@@ -1,6 +1,6 @@
 # Visual-preservation migration notes
 
-Source baseline: Aevora Website v0.4.2.
+Source baseline: Auryveth Website v0.4.2.
 
 - Shared Header and Footer extracted from baseline; relative links rewritten as absolute clean Astro routes.
 - Site styles and script copied byte-for-byte into `public/` to avoid altering the proven motion behavior.
