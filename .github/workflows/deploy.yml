@@ -1,4 +1,3 @@
-
 name: Publish AURYVETH website
 
 on:
@@ -60,3 +59,13 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Checkout for discovery notification
+        uses: actions/checkout@v4
+
+      - name: Notify IndexNow of published URLs
+        continue-on-error: true
+        env:
+          SITE_ORIGIN: https://auryveth.github.io
+          INDEXNOW_KEY: c3e3148c2c59bda0c83a19400c31c7dc
+        run: node scripts/notify-indexnow.mjs
