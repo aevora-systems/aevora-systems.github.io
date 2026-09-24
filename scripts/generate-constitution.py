@@ -33,6 +33,12 @@ def sample_bg(page, rect):
     r, g, b = max(colors, key=sum)
     return (r / 255.0, g / 255.0, b / 255.0)
 
+logo_svg = ROOT / "public" / "assets" / "logos" / "Auryveth_Logo_Horizontal_Corporate.svg"
+logo_doc = fitz.open(stream=logo_svg.read_bytes(), filetype="svg")
+logo_pix = logo_doc[0].get_pixmap(matrix=fitz.Matrix(2, 2), alpha=True)
+logo_png = logo_pix.tobytes("png")
+logo_doc.close()
+
 doc = fitz.open(src)
 for pno, page in enumerate(doc):
     spans = []
@@ -65,14 +71,12 @@ for pno, page in enumerate(doc):
 
     page.apply_redactions()
 
-    # Preserve the emblem and replace only the visible company wordmark.
+    # Restore the project emblem and the renamed wordmark as one branded asset.
     if pno == 0:
-        page.insert_text(
-            (59, 73),
-            "AURYVETH",
-            fontsize=22,
-            fontname="hebo",
-            color=(0.004, 0.16, 0.36),
+        page.insert_image(
+            fitz.Rect(58, 47, 337, 120),
+            stream=logo_png,
+            keep_proportion=True,
             overlay=True,
         )
 
