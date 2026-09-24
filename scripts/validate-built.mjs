@@ -52,7 +52,7 @@ for(const route of expected){
 }
 const noindex=read('404.html');
 if(!noindex.includes('noindex, follow')||noindex.includes('rel="canonical"'))throw Error('404 indexing signals incorrect');
-for(const asset of ['site.js','styles.css','assets/social/Aevora_OpenGraph_1200x630.jpg','documents/Aevora_Founder_Constitution_v0.1.pdf','.nojekyll'])read(asset);
+for(const asset of ['site.js','styles.css','assets/social/Auryveth_OpenGraph_1200x630.jpg','documents/Auryveth_Founder_Constitution_v0.1.pdf','.nojekyll'])read(asset);
 const xml=read('sitemap.xml');
 const sitemap=[...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(x=>x[1]).sort();
 const expectedUrls=expected.map(x=>origin+x).sort();
