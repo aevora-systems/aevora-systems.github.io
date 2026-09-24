@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 
 const root=process.cwd();
 const publicDir=path.join(root,'public');
