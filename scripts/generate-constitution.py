@@ -96,6 +96,8 @@ for pno, page in enumerate(doc):
 meta = doc.metadata or {}
 meta.update({
     "title": "Auryveth Founder Constitution v0.1",
+    "author": "Auryveth",
+    "creator": "Auryveth",
     "subject": "Auryveth founding principles, governance direction, and institutional commitments",
     "keywords": "Auryveth, founder constitution, governed autonomy, digital business organisms",
 })
@@ -113,4 +115,8 @@ if re.search(r"\bAEVORA\b|\bAevora\b", text):
 if "AURYVETH" not in text and "Auryveth" not in text:
     print("ERROR: AURYVETH text missing from generated PDF", file=sys.stderr)
     sys.exit(1)
-print(f"PASS PDF rebrand: {dst.name} contains no searchable AEVORA text")
+final_meta = check_meta = fitz.open(dst).metadata
+if any(re.search(r"\bAEVORA\b|\bAevora\b", str(v or "")) for v in final_meta.values()):
+    print("ERROR: old AEVORA text remains in PDF metadata", file=sys.stderr)
+    sys.exit(1)
+print(f"PASS PDF rebrand: {dst.name} contains no searchable AEVORA text or metadata")
