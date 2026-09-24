@@ -23,7 +23,7 @@ const organization = {
   '@type':'Organization', '@id':brandId,
   name:site.name, url:home, logo:new URL(site.logo, origin).href,
   description:site.description, foundingDate:site.foundingDate,
-  founder:{'@id':founderId}, sameAs:[site.github]
+  founder:{'@id':founderId}
 };
 const website = {
   '@type':'WebSite', '@id':websiteId, name:site.name, url:home,
@@ -47,7 +47,7 @@ const breadcrumb = segments.length && !noindex ? {
   itemListElement:[
     {'@type':'ListItem',position:1,name:'Home',item:home},
     ...segments.map((part,i)=>({
-      '@type':'ListItem',position:i+2,name:labels[part] || (i===segments.length-1 ? title.replace(/ — AEVORA$/i,'') : part),
+      '@type':'ListItem',position:i+2,name:labels[part] || (i===segments.length-1 ? title.replace(/ — AURYVETH$/i,'') : part),
       item:new URL('/'+segments.slice(0,i+1).join('/')+'/',origin).href
     }))
   ]
@@ -71,14 +71,14 @@ const graphJson = JSON.stringify(graph).replace(/</g,'\\u003c');
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={socialImage} />
-<meta property="og:image:alt" content="AEVORA — governed digital business organisms" />
+<meta property="og:image:alt" content="AURYVETH — governed digital business organisms" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={socialImage} />
-<meta name="twitter:image:alt" content="AEVORA — governed digital business organisms" />
+<meta name="twitter:image:alt" content="AURYVETH — governed digital business organisms" />
 <link rel="icon" href="/assets/favicons/favicon.ico" sizes="any" />
 <link rel="icon" href="/assets/favicons/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
