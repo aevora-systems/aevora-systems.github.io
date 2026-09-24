@@ -8,12 +8,12 @@ for(const slug of ['business-organism','governed-autonomy','organism-vs-agent','
  if(!fs.existsSync(`src/pages/knowledge/${slug}.astro`))throw Error(`Missing knowledge route ${slug}`);
  if(!fs.existsSync(`src/content/pages/knowledge-${slug}.html`))throw Error(`Missing knowledge content ${slug}`);
 }
-for(const asset of ['public/site.js','public/styles.css','public/assets/logos/Aevora_Logo_Horizontal_White.svg','public/documents/Aevora_Founder_Constitution_v0.1.pdf','public/.nojekyll']){
+for(const asset of ['public/site.js','public/styles.css','public/assets/logos/Auryveth_Logo_Horizontal_White.svg','public/documents/Auryveth_Founder_Constitution_v0.1.pdf','public/.nojekyll']){
  if(!fs.existsSync(asset))throw Error(`Missing ${asset}`);
 }
 const src=fs.readFileSync('src/data/site.ts','utf8');
 if(!src.includes('aevora-systems.github.io'))throw Error('Wrong organization origin');
-if(src.includes('hello@aevora.com'))throw Error('Invented email');
+if(src.includes('hello@auryveth.com'))throw Error('Invented email');
 for(const file of ['src/components/SEOHead.astro','src/content/pages/knowledge-index.html']){
  const t=fs.readFileSync(file,'utf8');
  if(!t.includes('Business')&&!t.includes('business'))throw Error(`Suspect empty content: ${file}`);
