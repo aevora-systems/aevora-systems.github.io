@@ -12,28 +12,39 @@ const origin = Astro.site ?? new URL(site.url);
 const home = new URL('/', origin).href;
 const canonical = new URL(path, origin).href;
 const socialImage = new URL(site.socialImage, origin).href;
+const socialImageId = socialImage + '#image';
 const brandId = home + '#organization';
 const founderId = home + '#founder';
 const websiteId = home + '#website';
 const founder = {
   '@type':'Person', '@id':founderId, name:site.founder,
-  url:new URL('/about/#founder', origin).href
+  url:new URL('/about/#founder', origin).href,
+  jobTitle:'Founder', worksFor:{'@id':brandId}
 };
 const organization = {
   '@type':'Organization', '@id':brandId,
   name:site.name, url:home, logo:new URL(site.logo, origin).href,
   description:site.description, foundingDate:site.foundingDate,
-  founder:{'@id':founderId}, sameAs:[site.github]
+  founder:{'@id':founderId}, sameAs:[site.github],
+  knowsAbout:[
+    {'@id':new URL('/knowledge/business-organism/#term',origin).href},
+    {'@id':new URL('/knowledge/governed-autonomy/#term',origin).href}
+  ]
 };
 const website = {
   '@type':'WebSite', '@id':websiteId, name:site.name, url:home,
-  publisher:{'@id':brandId}, description:site.description, inLanguage:'en'
+  publisher:{'@id':brandId}, about:{'@id':brandId},
+  description:site.description, inLanguage:'en'
 };
-const mainEntity = schema.find(node => node['@type'] === 'DefinedTerm' || node['@type'] === 'DigitalDocument');
+const socialImageObject = {
+  '@type':'ImageObject', '@id':socialImageId, url:socialImage, contentUrl:socialImage,
+  width:1200, height:630, caption:'AURYVETH — governed digital business organisms'
+};
+const mainEntity = schema.find(node => ['DefinedTerm','DefinedTermSet','DigitalDocument'].includes(String(node['@type'])));
 const pageSchema = {
   '@type':'WebPage', '@id':canonical+'#webpage', name:title, url:canonical,
   description, inLanguage:'en', isPartOf:{'@id':websiteId},
-  about:{'@id':brandId},
+  about:{'@id':brandId}, primaryImageOfPage:{'@id':socialImageId},
   ...(mainEntity ? {mainEntity:{'@id':mainEntity['@id'] || canonical+'#term'}} : {})
 };
 const labels:Record<string,string> = {
@@ -54,7 +65,7 @@ const breadcrumb = segments.length && !noindex ? {
 } : null;
 // One coherent first-party graph: all entities refer to stable IDs and public content.
 // Avoid fake credentials, customer results, FAQs, reviews or success metrics.
-const nodes=[organization,founder,website,pageSchema,...schema.map(({['@context']: _context,...node})=>node),...(breadcrumb?[breadcrumb]:[])];
+const nodes=[organization,founder,website,socialImageObject,pageSchema,...schema.map(({['@context']: _context,...node})=>node),...(breadcrumb?[breadcrumb]:[])];
 const graph = {'@context':'https://schema.org','@graph':nodes};
 const graphJson = JSON.stringify(graph).replace(/</g,'\\u003c');
 ---
@@ -62,8 +73,11 @@ const graphJson = JSON.stringify(graph).replace(/</g,'\\u003c');
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="theme-color" content="#020912" />
 <meta name="description" content={description} />
+<meta name="application-name" content={site.name} />
 <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
 {!noindex && <link rel="canonical" href={canonical} />}
+{!noindex && <link rel="alternate" hreflang="en" href={canonical} />}
+{!noindex && <link rel="alternate" hreflang="x-default" href={canonical} />}
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content={site.name} />
 <meta property="og:locale" content="en_US" />
@@ -71,6 +85,8 @@ const graphJson = JSON.stringify(graph).replace(/</g,'\\u003c');
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={socialImage} />
+<meta property="og:image:secure_url" content={socialImage} />
+<meta property="og:image:type" content="image/jpeg" />
 <meta property="og:image:alt" content="AURYVETH — governed digital business organisms" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />

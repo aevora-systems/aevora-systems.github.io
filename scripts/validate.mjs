@@ -13,6 +13,7 @@ for(const slug of ['business-organism','governed-autonomy','organism-vs-agent','
 for(const asset of [
  'public/site.js',
  'public/styles.css',
+ 'public/llms.txt',
  'public/assets/logos/Auryveth_Logo_Horizontal_White.svg',
  'public/assets/logos/Auryveth_Logo_Horizontal_Corporate.svg',
  'public/assets/logos/Auryveth_Logo_Emblem_Corporate.svg',
@@ -26,6 +27,9 @@ const src=fs.readFileSync('src/data/site.ts','utf8');
 if(!src.includes('auryveth.github.io'))throw Error('Wrong AURYVETH GitHub Pages origin');
 if(!src.includes("name: 'AURYVETH'"))throw Error('Public brand not switched to AURYVETH');
 if(src.includes('hello@'))throw Error('Invented email');
+const llms=fs.readFileSync('public/llms.txt','utf8');
+if(!llms.includes('https://auryveth.github.io/knowledge/business-organism/'))throw Error('llms.txt missing canonical business-organism definition');
+if(!llms.includes('Interpretation and evidence boundary'))throw Error('llms.txt missing evidence boundary');
 
 function walk(dir){
  return fs.readdirSync(dir,{withFileTypes:true}).flatMap(d=>d.isDirectory()?walk(path.join(dir,d.name)):[path.join(dir,d.name)]);
@@ -34,7 +38,7 @@ const residualBrandFiles=[];
 for(const root of ['src','public']){
  for(const file of walk(root).filter(f=>/\.(?:astro|html|ts|js|css|json|svg|txt)$/i.test(f))){
    const t=fs.readFileSync(file,'utf8');
-   if(/\b(?:AEVORA|Aevora)\b/.test(t))residualBrandFiles.push(file);
+   if(/\baevora(?:-systems)?\b/i.test(t))residualBrandFiles.push(file);
  }
 }
 if(residualBrandFiles.length)throw Error('Old public brand remains in: '+residualBrandFiles.join(', '));

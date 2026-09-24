@@ -26,6 +26,8 @@ for(const route of expected){
   const canonical=html.match(/<link rel="canonical" href="([^"]+)"\s*\/?\s*>/i)?.[1];
   if(canonical!==origin+route)throw Error(`Incorrect canonical ${route}: ${canonical}`);
   if((html.match(/rel="canonical"/g)||[]).length!==1)throw Error(`Canonical count: ${route}`);
+  if(!html.includes(`rel="alternate" hreflang="en" href="${canonical}"`))throw Error(`Missing English hreflang: ${route}`);
+  if(!html.includes(`rel="alternate" hreflang="x-default" href="${canonical}"`))throw Error(`Missing x-default hreflang: ${route}`);
   if((html.match(/<h1\b/gi)||[]).length!==1)throw Error(`Expected one visible H1: ${route}`);
   if(!html.includes('name="robots" content="index, follow'))throw Error(`Unexpected noindex: ${route}`);
   const json=html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i)?.[1];
@@ -33,13 +35,14 @@ for(const route of expected){
   let graph;try{graph=JSON.parse(json);}catch(e){throw Error(`Invalid JSON-LD: ${route} ${e.message}`);}
   if(graph['@context']!=='https://schema.org' || !Array.isArray(graph['@graph']))throw Error(`Invalid graph shape: ${route}`);
   const types=new Set(graph['@graph'].map(n=>n['@type']));
-  for(const needed of ['Organization','Person','WebSite','WebPage'])if(!types.has(needed))throw Error(`Missing ${needed}: ${route}`);
+  for(const needed of ['Organization','Person','WebSite','WebPage','ImageObject'])if(!types.has(needed))throw Error(`Missing ${needed}: ${route}`);
   const wp=graph['@graph'].find(n=>n['@type']==='WebPage');
   if(wp.url!==canonical)throw Error(`Graph page mismatch: ${route}`);
   const breadcrumb=graph['@graph'].find(n=>n['@type']==='BreadcrumbList');
   if(route==='/' ? !!breadcrumb : !breadcrumb)throw Error(`Breadcrumb mismatch: ${route}`);
   if(breadcrumb && breadcrumb.itemListElement.at(-1).item!==canonical)throw Error(`Breadcrumb target mismatch: ${route}`);
   if(!html.includes('property="og:image:alt"'))throw Error(`Missing social image description: ${route}`);
+  if(!html.includes('property="og:image:type" content="image/jpeg"'))throw Error(`Missing social image type: ${route}`);
   // Check local links against generated pages and files, not a guessed route list.
   for(const match of html.matchAll(/<(?:a|img|script|link)\b[^>]*?\b(?:href|src)="([^"]+)"/gi)){
     const href=match[1];
@@ -52,7 +55,7 @@ for(const route of expected){
 }
 const noindex=read('404.html');
 if(!noindex.includes('noindex, follow')||noindex.includes('rel="canonical"'))throw Error('404 indexing signals incorrect');
-for(const asset of ['site.js','styles.css','assets/social/Auryveth_OpenGraph_1200x630.jpg','documents/Auryveth_Founder_Constitution_v0.1.pdf','.nojekyll'])read(asset);
+for(const asset of ['site.js','styles.css','llms.txt','assets/social/Auryveth_OpenGraph_1200x630.jpg','documents/Auryveth_Founder_Constitution_v0.1.pdf','.nojekyll'])read(asset);
 const xml=read('sitemap.xml');
 const sitemap=[...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(x=>x[1]).sort();
 const expectedUrls=expected.map(x=>origin+x).sort();
@@ -62,4 +65,11 @@ const robots=read('robots.txt');
 if(!robots.includes(`Sitemap: ${origin}/sitemap.xml`))throw Error('robots.txt points to wrong sitemap');
 if(!robots.includes('Disallow: /diagnostics/'))throw Error('Diagnostic page not excluded from crawl');
 if(!robots.includes('OAI-SearchBot'))throw Error('Missing intended search-bot access');
-console.log(`PASS SEO audit: ${expected.length} unique pages, canonicals, single H1, valid JSON-LD, internal links, sitemap and robots.`);
+const llms=read('llms.txt');
+if(!llms.includes(`${origin}/knowledge/business-organism/`))throw Error('llms.txt missing canonical business-organism URL');
+if(!llms.includes('Interpretation and evidence boundary'))throw Error('llms.txt missing evidence boundary');
+for(const file of allFiles(root).filter(f=>/\.(?:html|xml|txt|json)$/i.test(f))){
+  const text=fs.readFileSync(file,'utf8');
+  if(/\baevora(?:-systems)?\b/i.test(text))throw Error(`Stale public brand/origin in build: ${path.relative(root,file)}`);
+}
+console.log(`PASS SEO/GEO audit: ${expected.length} unique pages, canonicals, hreflang, linked JSON-LD, internal links, sitemap, robots and llms.txt.`);
