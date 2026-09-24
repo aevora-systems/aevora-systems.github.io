@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: $&#123;&#123; steps.deployment.outputs.page_url &#125;&#125;
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy
         id: deployment
