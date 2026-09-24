@@ -3,7 +3,7 @@ name: Publish AURYVETH website
 
 on:
   push:
-    branches: [main, rebrand/auryveth-v0.7]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
