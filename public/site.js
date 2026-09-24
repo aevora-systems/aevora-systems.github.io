@@ -2,7 +2,7 @@ const header = document.querySelector('.site-header');
 const menuBtn = document.querySelector('.menu-button');
 const nav = document.querySelector('.nav');
 const systemMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-const readStoredMotion = () => { try { return localStorage.getItem('aevora-motion'); } catch { return null; } };
+const readStoredMotion = () => { try { return localStorage.getItem('auryveth-motion'); } catch { return null; } };
 const storedMotion = readStoredMotion();
 // v0.4.1: motion now defaults to LIVE after the page loads successfully.
 // A visitor can still reduce motion explicitly, and that preference is remembered.
@@ -70,7 +70,7 @@ document.body.appendChild(motionControl);
 const motionLabel = motionControl.querySelector('[data-motion-label]');
 function syncMotionControl(){
   motionControl.setAttribute('aria-pressed', String(motionEnabled));
-  motionControl.setAttribute('aria-label', motionEnabled ? 'Reduce Aevora motion' : 'Enable Aevora live motion');
+  motionControl.setAttribute('aria-label', motionEnabled ? 'Reduce Auryveth motion' : 'Enable Auryveth live motion');
   motionLabel.textContent = motionEnabled ? 'Motion: live' : 'Motion: reduced';
 }
 syncMotionControl();
@@ -113,10 +113,10 @@ const lerp = (a,b,t) => a+(b-a)*t;
 const smooth = t => t*t*(3-2*t);
 
 
-class AevoraStarfield {
+class AuryvethStarfield {
   constructor(){
     this.canvas=document.createElement('canvas');
-    this.canvas.className='aevora-starfield';
+    this.canvas.className='auryveth-starfield';
     this.canvas.setAttribute('aria-hidden','true');
     document.body.prepend(this.canvas);
     this.ctx=this.canvas.getContext('2d',{alpha:true,desynchronized:true});
@@ -548,7 +548,7 @@ class LivingOrganism {
   }
 }
 
-const aevoraStarfield=new AevoraStarfield();
+const auryvethStarfield=new AuryvethStarfield();
 
 const organismScenes=[];
 document.querySelectorAll('[data-organism-canvas]').forEach(canvas => {
@@ -559,11 +559,11 @@ document.querySelectorAll('[data-organism-canvas]').forEach(canvas => {
 
 function setMotionEnabled(value, persist=true){
   motionEnabled=Boolean(value);
-  if(persist){ try { localStorage.setItem('aevora-motion', motionEnabled ? 'live' : 'reduced'); } catch {} }
+  if(persist){ try { localStorage.setItem('auryveth-motion', motionEnabled ? 'live' : 'reduced'); } catch {} }
   applyMotionClass();
   syncMotionControl();
   organismScenes.forEach(scene=>scene.setMotion(motionEnabled));
-  aevoraStarfield?.setMotion(motionEnabled);
+  auryvethStarfield?.setMotion(motionEnabled);
 }
 motionControl.addEventListener('click',()=>setMotionEnabled(!motionEnabled,true));
 systemMotionQuery.addEventListener?.('change',()=>{
@@ -574,7 +574,7 @@ systemMotionQuery.addEventListener?.('change',()=>{
 });
 document.addEventListener('visibilitychange',()=>{
   organismScenes.forEach(scene=>document.hidden?scene.stop():scene.setMotion(motionEnabled));
-  if(document.hidden) aevoraStarfield?.stop(); else aevoraStarfield?.setMotion(motionEnabled);
+  if(document.hidden) auryvethStarfield?.stop(); else auryvethStarfield?.setMotion(motionEnabled);
 });
 
 // Continuous scroll scrubbing. The visual changes continuously; only the small
@@ -639,11 +639,11 @@ if(runtimeEvents.length > 1 && motionEnabled){
   startRuntime();
 }
 
-// Public pilot form stays disconnected until Aevora has an official endpoint.
+// Public pilot form stays disconnected until Auryveth has an official endpoint.
 document.querySelectorAll('[data-interest-form]').forEach(form => {
   form.addEventListener('submit', e => {
     e.preventDefault();
     const status = form.querySelector('.form-status');
-    if(status) status.textContent = 'Aevora has not connected the public enquiry endpoint yet. No form data was submitted.';
+    if(status) status.textContent = 'Auryveth has not connected the public enquiry endpoint yet. No form data was submitted.';
   });
 });
