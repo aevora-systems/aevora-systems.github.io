@@ -33,3 +33,10 @@
 - Open Graph/social cover images and the Founder Constitution are regenerated during build under AURYVETH filenames.
 - Current GitHub organization, repository and Pages host remain unchanged as temporary technical infrastructure.
 - JSON-LD no longer advertises the transitional GitHub organization as a sameAs identity until that account is renamed.
+
+## v0.8.0 — AURYVETH GitHub namespace migration
+
+- Prepared the organization identity for `github.com/auryveth`.
+- Prepared the organization-root Pages repository name `auryveth.github.io`.
+- Canonical site origin, sitemap, robots, structured data and webmaster instructions now target `https://auryveth.github.io/`.
+- Restores the verified GitHub organization as the public Organization `sameAs` identity after the namespace migration.

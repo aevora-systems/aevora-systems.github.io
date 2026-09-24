@@ -23,7 +23,7 @@ const organization = {
   '@type':'Organization', '@id':brandId,
   name:site.name, url:home, logo:new URL(site.logo, origin).href,
   description:site.description, foundingDate:site.foundingDate,
-  founder:{'@id':founderId}
+  founder:{'@id':founderId}, sameAs:[site.github]
 };
 const website = {
   '@type':'WebSite', '@id':websiteId, name:site.name, url:home,

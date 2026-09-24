@@ -5,10 +5,10 @@ These steps require the GitHub organization owner and cannot be completed by pub
 ## Google Search Console
 
 1. Sign in to https://search.google.com/search-console/ with the account that will manage AURYVETH.
-2. Add a URL-prefix property: `https://aevora-systems.github.io/` (including protocol and trailing slash).
+2. Add a URL-prefix property: `https://auryveth.github.io/` (including protocol and trailing slash).
 3. Select an ownership method supported on GitHub Pages. For an HTML file method, download the **actual** verification file and commit it unmodified at `public/google<your-verification-value>.html`. Astro copies `public/` to the deployed root. The value is account-specific; this repository intentionally includes no fake verification token.
 4. Wait for GitHub Actions deployment, open the verification URL, and finish verification in Search Console.
-5. Submit `https://aevora-systems.github.io/sitemap.xml` under Sitemaps; inspect the home, knowledge hub and new pages with URL Inspection.
+5. Submit `https://auryveth.github.io/sitemap.xml` under Sitemaps; inspect the home, knowledge hub and new pages with URL Inspection.
 
 ## Bing Webmaster Tools
 

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root = path.resolve('dist');
-const origin = (process.env.PUBLIC_SITE_URL || 'https://aevora-systems.github.io').replace(/\/$/, '');
+const origin = (process.env.PUBLIC_SITE_URL || 'https://auryveth.github.io').replace(/\/$/, '');
 const expected = ['/', '/about/', '/organisms/', '/research/', '/roadmap/', '/constitution/', '/investors/', '/pilot/', '/privacy/',
   '/knowledge/', '/knowledge/business-organism/', '/knowledge/governed-autonomy/', '/knowledge/organism-vs-agent/',
   '/knowledge/authority-levels/', '/knowledge/internal-proving-ground/'];
