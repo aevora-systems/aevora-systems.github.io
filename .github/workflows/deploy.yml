@@ -1,9 +1,9 @@
 
-name: Publish AEVORA website
+name: Publish AURYVETH website
 
 on:
   push:
-    branches: [main]
+    branches: [main, rebrand/auryveth-v0.7]
   workflow_dispatch:
 
 permissions:
@@ -48,6 +48,7 @@ jobs:
           path: ./dist
 
   deploy:
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment:
