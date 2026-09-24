@@ -1,8 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import bodyHtml from '../../content/pages/knowledge-index.html?raw';
-const schema = [];
+const schema = [{
+  '@type':'DefinedTermSet', '@id':new URL('/knowledge/#definitions',Astro.site).href,
+  name:'AEVORA Knowledge — first-party definitions',
+  description:'Definitions and explanatory pages about AEVORA’s proposed business organisms and governed autonomy.',
+  url:new URL('/knowledge/',Astro.site).href,
+  hasDefinedTerm:[
+    {'@id':new URL('/knowledge/business-organism/#term',Astro.site).href},
+    {'@id':new URL('/knowledge/governed-autonomy/#term',Astro.site).href}
+  ]
+}];
 ---
-<BaseLayout title={"AEVORA Knowledge \u2014 Definitions"} description={"Definitions of business organisms, governed autonomy and foundational AEVORA concepts."} path={"/knowledge/"} nav="knowledge" schema={schema}>
+<BaseLayout title={"AEVORA Knowledge \u2014 Definitions"} description={"Explore AEVORA’s original definitions, proposed authority model, internal proving-ground plan and related first-party explanations."} path={"/knowledge/"} nav="knowledge" schema={schema}>
   <Fragment set:html={bodyHtml} />
 </BaseLayout>

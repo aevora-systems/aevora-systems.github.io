@@ -5,68 +5,84 @@ interface Props {
   description: string;
   path?: string;
   noindex?: boolean;
-  article?: boolean;
   schema?: Record<string, unknown>[];
 }
-const { title, description, path = Astro.url.pathname, noindex = false, article = false, schema = [] } = Astro.props;
+const { title, description, path = Astro.url.pathname, noindex = false, schema = [] } = Astro.props;
 const origin = Astro.site ?? new URL(site.url);
+const home = new URL('/', origin).href;
 const canonical = new URL(path, origin).href;
 const socialImage = new URL(site.socialImage, origin).href;
-const brandId = new URL('/#organization', origin).href;
-const founderId = new URL('/#founder', origin).href;
+const brandId = home + '#organization';
+const founderId = home + '#founder';
+const websiteId = home + '#website';
+const founder = {
+  '@type':'Person', '@id':founderId, name:site.founder,
+  url:new URL('/about/#founder', origin).href
+};
 const organization = {
-  '@context':'https://schema.org', '@type':'Organization', '@id':brandId,
-  name:site.name, url:new URL('/', origin).href,
-  logo:new URL(site.logo, origin).href,
-  description:site.description,
-  foundingDate:site.foundingDate,
-  founder:{'@type':'Person','@id':founderId,name:site.founder},
-  sameAs:[site.github]
+  '@type':'Organization', '@id':brandId,
+  name:site.name, url:home, logo:new URL(site.logo, origin).href,
+  description:site.description, foundingDate:site.foundingDate,
+  founder:{'@id':founderId}, sameAs:[site.github]
 };
 const website = {
-  '@context':'https://schema.org','@type':'WebSite',
-  '@id':new URL('/#website', origin).href,
-  name:site.name,url:new URL('/', origin).href,
-  publisher:{'@id':brandId},description:site.description,inLanguage:'en'
+  '@type':'WebSite', '@id':websiteId, name:site.name, url:home,
+  publisher:{'@id':brandId}, description:site.description, inLanguage:'en'
 };
+const mainEntity = schema.find(node => node['@type'] === 'DefinedTerm' || node['@type'] === 'DigitalDocument');
 const pageSchema = {
-  '@context':'https://schema.org','@type':'WebPage',
-  '@id':canonical+'#webpage',name:title,url:canonical,description,
-  inLanguage:'en',isPartOf:{'@id':new URL('/#website', origin).href},
-  about:{'@id':brandId}
+  '@type':'WebPage', '@id':canonical+'#webpage', name:title, url:canonical,
+  description, inLanguage:'en', isPartOf:{'@id':websiteId},
+  about:{'@id':brandId},
+  ...(mainEntity ? {mainEntity:{'@id':mainEntity['@id'] || canonical+'#term'}} : {})
 };
-const breadcrumb = path === '/' || noindex ? null : {
-  '@context':'https://schema.org','@type':'BreadcrumbList',
+const labels:Record<string,string> = {
+  knowledge:'Knowledge', 'business-organism':'Business organism',
+  'governed-autonomy':'Governed autonomy', 'organism-vs-agent':'Organism vs. agent',
+  'authority-levels':'Authority levels', 'internal-proving-ground':'Internal proving ground'
+};
+const segments=path.split('/').filter(Boolean);
+const breadcrumb = segments.length && !noindex ? {
+  '@type':'BreadcrumbList', '@id':canonical+'#breadcrumb',
   itemListElement:[
-    {'@type':'ListItem',position:1,name:'Home',item:new URL('/', origin).href},
-    {'@type':'ListItem',position:2,name:title.replace(/ — Aevora$/i,''),item:canonical}
+    {'@type':'ListItem',position:1,name:'Home',item:home},
+    ...segments.map((part,i)=>({
+      '@type':'ListItem',position:i+2,name:labels[part] || (i===segments.length-1 ? title.replace(/ — AEVORA$/i,'') : part),
+      item:new URL('/'+segments.slice(0,i+1).join('/')+'/',origin).href
+    }))
   ]
-};
-const structured = [organization,website,pageSchema,...schema,...(breadcrumb?[breadcrumb]:[])];
+} : null;
+// One coherent first-party graph: all entities refer to stable IDs and public content.
+// Avoid fake credentials, customer results, FAQs, reviews or success metrics.
+const nodes=[organization,founder,website,pageSchema,...schema.map(({['@context']: _context,...node})=>node),...(breadcrumb?[breadcrumb]:[])];
+const graph = {'@context':'https://schema.org','@graph':nodes};
+const graphJson = JSON.stringify(graph).replace(/</g,'\\u003c');
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="theme-color" content="#020912" />
 <meta name="description" content={description} />
-<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
-<link rel="canonical" href={canonical} />
-<meta property="og:type" content={article ? 'article' : 'website'} />
+<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+{!noindex && <link rel="canonical" href={canonical} />}
+<meta property="og:type" content="website" />
 <meta property="og:site_name" content={site.name} />
 <meta property="og:locale" content="en_US" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={socialImage} />
+<meta property="og:image:alt" content="AEVORA — governed digital business organisms" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={socialImage} />
+<meta name="twitter:image:alt" content="AEVORA — governed digital business organisms" />
 <link rel="icon" href="/assets/favicons/favicon.ico" sizes="any" />
 <link rel="icon" href="/assets/favicons/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="stylesheet" href="/styles.css" />
 <title>{title}</title>
-{structured.map(item => <script type="application/ld+json" set:html={JSON.stringify(item).replace(/</g,'\\u003c')} />)}
+{!noindex && <script type="application/ld+json" set:html={graphJson} />}

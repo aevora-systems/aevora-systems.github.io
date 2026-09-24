@@ -1,4 +1,4 @@
-# AEVORA Website — v0.5.1 (Astro static + SEO/GEO foundation)
+# AEVORA Website — v0.6.0 (Astro static + first-party SEO/GEO knowledge cluster)
 
 Official deployment target: **https://aevora-systems.github.io/**. GitHub organization: https://github.com/aevora-systems.
 
@@ -55,3 +55,7 @@ Do not create a CNAME until an actual domain is purchased and configured. To mov
 ## Why no Electron or backend?
 
 GitHub Pages serves prerendered HTML/CSS/JS. Astro produces exactly that. The future customer organism console and backend should be separately hosted when needed.
+
+## v0.6 release notes
+
+Five original explanation pages are linked under `/knowledge/`; three were added in v0.6. The JSON-LD graph describes only public, visible facts. The build audit checks canonical coverage, unique titles/descriptions, H1, JSON-LD validity, internal links, sitemap parity and supporting assets. See `docs/SEO_GEO_STRATEGY.md` for content boundaries and `docs/SEARCH_CONSOLE_SETUP.md` for the owner-only verification steps. No claim is made about ranking, indexing, AI citations, customer deployments or experimental results.

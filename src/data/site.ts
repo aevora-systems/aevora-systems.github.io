@@ -9,6 +9,7 @@ export const site = {
   github: 'https://github.com/aevora-systems',
   logo: '/assets/logos/Aevora_Logo_Horizontal_Corporate.svg',
   socialImage: '/assets/social/Aevora_OpenGraph_1200x630.jpg'
+  // No addresses, registration identifiers, emails or product claims until publicly verified.
 } as const;
 
 export const pages = {
@@ -68,8 +69,19 @@ export const pages = {
   }
 } as const;
 
+// Every entry below must have a real, prerendered public page. The build audit compares
+// this registry to the generated HTML and sitemap; never add speculative URLs.
+export const knowledgePages = {
+  'business-organism': { title: 'What Is a Business Organism? — AEVORA', description: 'AEVORA’s definition of a persistent digital business organism, its scope, its intended continuity and its authority boundaries.' },
+  'governed-autonomy': { title: 'What Is Governed Autonomy? — AEVORA', description: 'Why better capabilities do not confer permission: AEVORA’s definition of explicitly granted, bounded operational authority.' },
+  'organism-vs-agent': { title: 'Business Organism vs. AI Agent — AEVORA', description: 'How AEVORA distinguishes its persistent business-organism architecture from task-oriented AI agent systems, without claiming current autonomy.' },
+  'authority-levels': { title: 'How a Business Organism Earns Authority — AEVORA', description: 'Explore AEVORA’s proposed progression from observing and preparing work to explicitly approved, bounded execution.' },
+  'internal-proving-ground': { title: 'Why AEVORA Tests Its Organisms Internally First', description: 'AEVORA’s planned internal proving ground: prepare real work, review outcomes, measure reliability and earn narrowly scoped authority.' }
+} as const;
+
 export const indexedPaths = [
   '/', '/organisms/', '/research/', '/roadmap/', '/constitution/',
   '/investors/', '/about/', '/pilot/', '/privacy/',
-  '/knowledge/', '/knowledge/business-organism/', '/knowledge/governed-autonomy/'
+  '/knowledge/', '/knowledge/business-organism/', '/knowledge/governed-autonomy/',
+  '/knowledge/organism-vs-agent/', '/knowledge/authority-levels/', '/knowledge/internal-proving-ground/'
 ] as const;

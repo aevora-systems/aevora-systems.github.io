@@ -1,14 +1,21 @@
 import fs from 'node:fs';
-import path from 'node:path';
-const src=fs.readFileSync('src/data/site.ts','utf8');
-const expected=['index','organisms','research','roadmap','constitution','investors','about','pilot','privacy'];
-for(const page of expected){
+const pages=['index','organisms','research','roadmap','constitution','investors','about','pilot','privacy'];
+for(const page of pages){
  if(!fs.existsSync(`src/pages/${page}.astro`))throw Error(`Missing Astro page ${page}`);
- if(!fs.existsSync(`src/content/pages/${page==='index'?'index':page}.html`))throw Error(`Missing page body ${page}`);
+ if(!fs.existsSync(`src/content/pages/${page}.html`))throw Error(`Missing page body ${page}`);
 }
-for(const asset of ['public/site.js','public/styles.css','public/assets/logos/Aevora_Logo_Horizontal_White.svg','public/documents/Aevora_Founder_Constitution_v0.1.pdf']){
+for(const slug of ['business-organism','governed-autonomy','organism-vs-agent','authority-levels','internal-proving-ground']){
+ if(!fs.existsSync(`src/pages/knowledge/${slug}.astro`))throw Error(`Missing knowledge route ${slug}`);
+ if(!fs.existsSync(`src/content/pages/knowledge-${slug}.html`))throw Error(`Missing knowledge content ${slug}`);
+}
+for(const asset of ['public/site.js','public/styles.css','public/assets/logos/Aevora_Logo_Horizontal_White.svg','public/documents/Aevora_Founder_Constitution_v0.1.pdf','public/.nojekyll']){
  if(!fs.existsSync(asset))throw Error(`Missing ${asset}`);
 }
+const src=fs.readFileSync('src/data/site.ts','utf8');
 if(!src.includes('aevora-systems.github.io'))throw Error('Wrong organization origin');
 if(src.includes('hello@aevora.com'))throw Error('Invented email');
-console.log('PASS source: Astro pages, content, animation, brand assets, constitution, URL');
+for(const file of ['src/components/SEOHead.astro','src/content/pages/knowledge-index.html']){
+ const t=fs.readFileSync(file,'utf8');
+ if(!t.includes('Business')&&!t.includes('business'))throw Error(`Suspect empty content: ${file}`);
+}
+console.log('PASS source: core pages, 5 knowledge pages, brand assets, constitution and verified origin');

@@ -1,16 +1,65 @@
 import fs from 'node:fs';
-const root='dist';
-const paths=['index.html','about/index.html','organisms/index.html','research/index.html','roadmap/index.html','constitution/index.html','investors/index.html','pilot/index.html','privacy/index.html','knowledge/index.html','knowledge/business-organism/index.html','knowledge/governed-autonomy/index.html','404.html','sitemap.xml','robots.txt','site.js','styles.css'];
-for(const p of paths){if(!fs.existsSync(`${root}/${p}`)) throw Error(`Missing build output ${p}`);}
-for(const p of paths.filter(p=>p.endsWith('index.html'))){
- const txt=fs.readFileSync(`${root}/${p}`,'utf8');
- for(const needle of ['rel="canonical"','application/ld+json','name="description"','property="og:image"']){
-  if(!txt.includes(needle))throw Error(`Missing SEO ${needle} on ${p}`);
- }
+import path from 'node:path';
+
+const root = path.resolve('dist');
+const origin = (process.env.PUBLIC_SITE_URL || 'https://aevora-systems.github.io').replace(/\/$/, '');
+const expected = ['/', '/about/', '/organisms/', '/research/', '/roadmap/', '/constitution/', '/investors/', '/pilot/', '/privacy/',
+  '/knowledge/', '/knowledge/business-organism/', '/knowledge/governed-autonomy/', '/knowledge/organism-vs-agent/',
+  '/knowledge/authority-levels/', '/knowledge/internal-proving-ground/'];
+function read(file) {
+  const full = path.join(root,file);
+  if(!fs.existsSync(full)) throw Error(`Missing build output: ${file}`);
+  return fs.readFileSync(full,'utf8');
 }
-const site=fs.readFileSync(`${root}/sitemap.xml`,'utf8');
-if(!site.includes('https://aevora-systems.github.io/knowledge/'))throw Error('Sitemap origin incorrect');
-const robots=fs.readFileSync(`${root}/robots.txt`,'utf8');
-if(!robots.includes('OAI-SearchBot'))throw Error('Missing crawler rule');
-if(robots.includes('example.com'))throw Error('Placeholder production domain');
-console.log(`PASS build: ${paths.length} required outputs, metadata, sitemap, crawler access`);
+function allFiles(dir) { return fs.readdirSync(dir,{withFileTypes:true}).flatMap(d => d.isDirectory() ? allFiles(path.join(dir,d.name)) : [path.join(dir,d.name)]); }
+const outputPages=allFiles(root).filter(f=>f.endsWith('/index.html')).map(f=>'/'+path.relative(root,f).replaceAll(path.sep,'/').replace(/index\.html$/,'')).sort();
+if(JSON.stringify(outputPages)!==JSON.stringify([...expected].sort())) throw Error(`Sitemap registry / built page drift:\nExpected: ${expected.sort()}\nActual: ${outputPages}`);
+const titles=new Set(), descriptions=new Set();
+for(const route of expected){
+  const file=(route==='/'?'':route.slice(1))+'index.html';
+  const html=read(file);
+  const title=html.match(/<title>([^<]+)<\/title>/i)?.[1];
+  const desc=html.match(/<meta name="description" content="([^"]+)"\s*\/?\s*>/i)?.[1];
+  if(!title || titles.has(title)) throw Error(`Missing or duplicate title: ${route}`);
+  if(!desc || descriptions.has(desc)) throw Error(`Missing or duplicate description: ${route}`);
+  titles.add(title);descriptions.add(desc);
+  const canonical=html.match(/<link rel="canonical" href="([^"]+)"\s*\/?\s*>/i)?.[1];
+  if(canonical!==origin+route)throw Error(`Incorrect canonical ${route}: ${canonical}`);
+  if((html.match(/rel="canonical"/g)||[]).length!==1)throw Error(`Canonical count: ${route}`);
+  if((html.match(/<h1\b/gi)||[]).length!==1)throw Error(`Expected one visible H1: ${route}`);
+  if(!html.includes('name="robots" content="index, follow'))throw Error(`Unexpected noindex: ${route}`);
+  const json=html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i)?.[1];
+  if(!json)throw Error(`Missing structured graph: ${route}`);
+  let graph;try{graph=JSON.parse(json);}catch(e){throw Error(`Invalid JSON-LD: ${route} ${e.message}`);}
+  if(graph['@context']!=='https://schema.org' || !Array.isArray(graph['@graph']))throw Error(`Invalid graph shape: ${route}`);
+  const types=new Set(graph['@graph'].map(n=>n['@type']));
+  for(const needed of ['Organization','Person','WebSite','WebPage'])if(!types.has(needed))throw Error(`Missing ${needed}: ${route}`);
+  const wp=graph['@graph'].find(n=>n['@type']==='WebPage');
+  if(wp.url!==canonical)throw Error(`Graph page mismatch: ${route}`);
+  const breadcrumb=graph['@graph'].find(n=>n['@type']==='BreadcrumbList');
+  if(route==='/' ? !!breadcrumb : !breadcrumb)throw Error(`Breadcrumb mismatch: ${route}`);
+  if(breadcrumb && breadcrumb.itemListElement.at(-1).item!==canonical)throw Error(`Breadcrumb target mismatch: ${route}`);
+  if(!html.includes('property="og:image:alt"'))throw Error(`Missing social image description: ${route}`);
+  // Check local links against generated pages and files, not a guessed route list.
+  for(const match of html.matchAll(/<(?:a|img|script|link)\b[^>]*?\b(?:href|src)="([^"]+)"/gi)){
+    const href=match[1];
+    if(!href.startsWith('/'))continue;
+    const url=new URL(href,origin);let target=decodeURIComponent(url.pathname).slice(1);
+    if(!target || target.endsWith('/'))target+='index.html';
+    if(!fs.existsSync(path.join(root,target)))throw Error(`Broken local link ${href} on ${route}`);
+    if(url.hash && href.startsWith('#')) { /* local fragments checked below */ }
+  }
+}
+const noindex=read('404.html');
+if(!noindex.includes('noindex, follow')||noindex.includes('rel="canonical"'))throw Error('404 indexing signals incorrect');
+for(const asset of ['site.js','styles.css','assets/social/Aevora_OpenGraph_1200x630.jpg','documents/Aevora_Founder_Constitution_v0.1.pdf','.nojekyll'])read(asset);
+const xml=read('sitemap.xml');
+const sitemap=[...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(x=>x[1]).sort();
+const expectedUrls=expected.map(x=>origin+x).sort();
+if(JSON.stringify(sitemap)!==JSON.stringify(expectedUrls))throw Error('Sitemap does not equal indexable built pages');
+if(xml.includes('404') || xml.includes('diagnostics'))throw Error('Sitemap includes utility page');
+const robots=read('robots.txt');
+if(!robots.includes(`Sitemap: ${origin}/sitemap.xml`))throw Error('robots.txt points to wrong sitemap');
+if(!robots.includes('Disallow: /diagnostics/'))throw Error('Diagnostic page not excluded from crawl');
+if(!robots.includes('OAI-SearchBot'))throw Error('Missing intended search-bot access');
+console.log(`PASS SEO audit: ${expected.length} unique pages, canonicals, single H1, valid JSON-LD, internal links, sitemap and robots.`);
