@@ -1,0 +1,72 @@
+---
+import { site } from '../data/site';
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  noindex?: boolean;
+  article?: boolean;
+  schema?: Record<string, unknown>[];
+}
+const { title, description, path = Astro.url.pathname, noindex = false, article = false, schema = [] } = Astro.props;
+const origin = Astro.site ?? new URL(site.url);
+const canonical = new URL(path, origin).href;
+const socialImage = new URL(site.socialImage, origin).href;
+const brandId = new URL('/#organization', origin).href;
+const founderId = new URL('/#founder', origin).href;
+const organization = {
+  '@context':'https://schema.org', '@type':'Organization', '@id':brandId,
+  name:site.name, url:new URL('/', origin).href,
+  logo:new URL(site.logo, origin).href,
+  description:site.description,
+  foundingDate:site.foundingDate,
+  founder:{'@type':'Person','@id':founderId,name:site.founder},
+  sameAs:[site.github]
+};
+const website = {
+  '@context':'https://schema.org','@type':'WebSite',
+  '@id':new URL('/#website', origin).href,
+  name:site.name,url:new URL('/', origin).href,
+  publisher:{'@id':brandId},description:site.description,inLanguage:'en'
+};
+const pageSchema = {
+  '@context':'https://schema.org','@type':'WebPage',
+  '@id':canonical+'#webpage',name:title,url:canonical,description,
+  inLanguage:'en',isPartOf:{'@id':new URL('/#website', origin).href},
+  about:{'@id':brandId}
+};
+const breadcrumb = path === '/' || noindex ? null : {
+  '@context':'https://schema.org','@type':'BreadcrumbList',
+  itemListElement:[
+    {'@type':'ListItem',position:1,name:'Home',item:new URL('/', origin).href},
+    {'@type':'ListItem',position:2,name:title.replace(/ — Aevora$/i,''),item:canonical}
+  ]
+};
+const structured = [organization,website,pageSchema,...schema,...(breadcrumb?[breadcrumb]:[])];
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#020912" />
+<meta name="description" content={description} />
+<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
+<link rel="canonical" href={canonical} />
+<meta property="og:type" content={article ? 'article' : 'website'} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="en_US" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={socialImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={socialImage} />
+<link rel="icon" href="/assets/favicons/favicon.ico" sizes="any" />
+<link rel="icon" href="/assets/favicons/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="stylesheet" href="/styles.css" />
+<title>{title}</title>
+{structured.map(item => <script type="application/ld+json" set:html={JSON.stringify(item).replace(/</g,'\\u003c')} />)}

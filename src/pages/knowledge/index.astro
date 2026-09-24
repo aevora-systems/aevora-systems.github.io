@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import bodyHtml from '../../content/pages/knowledge-index.html?raw';
+const schema = [];
+---
+<BaseLayout title={"AEVORA Knowledge \u2014 Definitions"} description={"Definitions of business organisms, governed autonomy and foundational AEVORA concepts."} path={"/knowledge/"} nav="knowledge" schema={schema}>
+  <Fragment set:html={bodyHtml} />
+</BaseLayout>
