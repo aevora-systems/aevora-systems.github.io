@@ -1,4 +1,4 @@
-# AEVORA SEO / GEO release strategy — v0.6
+# AURYVETH SEO / GEO release strategy — v0.6
 
 **Scope:** official static website at https://aevora-systems.github.io/. The first-party material describes the actual founding record, planned operating model and research direction. It is not evidence of a deployed generalized autonomous organism.
 
@@ -13,7 +13,7 @@
 
 ## 2. Entity vocabulary and truth boundaries
 
-AEVORA is a technology and research company developing governed digital business organisms. A business organism is AEVORA's term for a persistent digital system designed to learn an organization's approved operating context, prepare work, coordinate activity and progressively earn bounded autonomy.
+AURYVETH is a technology and research company developing governed digital business organisms. A business organism is AURYVETH's term for a persistent digital system designed to learn an organization's approved operating context, prepare work, coordinate activity and progressively earn bounded autonomy.
 
 Use clear distinctions throughout: *definition*, *proposed architecture*, *planned validation*, *published founding record*, and *observed experimental result*. A proposal must never be represented as measured production capability. Avoid claims about clients, trials, incorporation/registration, funding, performance, pricing, independent recognition, private dataset results, autonomous agency or press coverage unless documented and approved.
 
