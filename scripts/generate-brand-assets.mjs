@@ -4,7 +4,7 @@ import sharp from 'sharp';
 
 const root=process.cwd();
 const publicDir=path.join(root,'public');
-const logoPath=path.join(publicDir,'assets/logos/Auryveth_Logo_Horizontal_Corporate.svg');
+const logoPath=path.join(publicDir,'assets/logos/Auryveth_Logo_Horizontal_White.svg');
 const logoSvg=await fs.readFile(logoPath,'utf8');
 const logoData='data:image/svg+xml;base64,'+Buffer.from(logoSvg).toString('base64');
 
