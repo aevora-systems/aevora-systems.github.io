@@ -694,3 +694,120 @@ body.motion-reduced .journey-topline i{animation-play-state:paused!important}
   .nav-dropdown a:hover,.nav-dropdown a:focus-visible,.nav-dropdown a.current{background:#eef6f8!important;transform:none}
 }
 @media(prefers-reduced-motion:reduce){.nav-dropdown,.nav-chevron{transition-duration:.01ms!important}}
+
+
+/* =========================================================
+   AURYVETH v0.9.2 — contrast accessibility pass
+   Color-only corrections for readable text on dark and light surfaces.
+   ========================================================= */
+:root{
+  --dark-heading:#f4fbfd;
+  --dark-text:#d7e7ee;
+  --dark-muted:#b7cbd5;
+  --dark-subtle:#9eb8c5;
+  --light-accent-text:#08747b;
+}
+
+/* Transparent content sections sit over the site's dark starfield. */
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip){
+  color:var(--dark-text);
+}
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .section-head h2,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) > .container > h2,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) > .container > .grid-2 > div:not(.card):not(.form-card) h2,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .timeline-item h3,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .split-list .point strong,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .founder-home-card > div:first-child h2,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .document-feature > div:first-child h2,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .organism-shell h2{
+  color:var(--dark-heading);
+}
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .section-head .lead,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) > .container > p,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) > .container > .grid-2 > div:not(.card):not(.form-card) p,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .timeline-item p,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .split-list .point p,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .founder-home-card > div:first-child .lead,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .document-feature > div:first-child .lead,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .organism-shell .lead,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .organism-shell .muted{
+  color:var(--dark-muted);
+}
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .section-head .eyebrow,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) > .container > .eyebrow,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) > .container > .grid-2 > div:not(.card):not(.form-card) > .eyebrow,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .founder-home-card > div:first-child .eyebrow,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .document-feature > div:first-child .eyebrow,
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .organism-shell .eyebrow{
+  color:#62e8ed;
+}
+
+/* Timeline labels need different text colors on dark versus light sections. */
+.section:not(.soft):not(.dark):not(.intelligence-section):not(.founder-investor-strip) .timeline-item .phase{
+  color:#62e8ed;
+}
+.section.soft .timeline-item .phase{
+  color:var(--light-accent-text);
+}
+
+/* Light surfaces: small teal labels need a darker accessible brand tone. */
+.section.soft .eyebrow,
+.intelligence-section .eyebrow,
+.card:not(.dark-card) .eyebrow,
+.form-card .eyebrow,
+.founder-panel .eyebrow,
+.founder-investor-strip .eyebrow,
+.document-callout .eyebrow,
+.workflow-outcome .eyebrow,
+.workflow-step small,
+.founder-role,
+.card:not(.dark-card) .text-link,
+.founder-home-action .text-link,
+.founder-investor-line .text-link{
+  color:var(--light-accent-text);
+}
+
+/* Dark cards and explicitly dark surfaces retain a bright accent. */
+.section.dark .eyebrow,
+.card.dark-card .eyebrow,
+.thesis-box .eyebrow,
+.proof-panel .eyebrow{
+  color:#62e8ed;
+}
+
+/* Dark component secondary text. */
+.signal-item{color:var(--dark-subtle)}
+.proof-panel::after{color:var(--dark-subtle)}
+.proof-step small{color:var(--dark-subtle)}
+.authority-step span:last-child{color:var(--dark-subtle)}
+.authority-step .muted{color:var(--dark-muted)}
+.status-chip{color:var(--dark-subtle)}
+
+/* Organism visual/HUD labels: keep the cinematic look without sacrificing legibility. */
+.living-status-line{color:var(--dark-subtle)}
+.living-status small{color:var(--dark-subtle)}
+.living-axis span{color:#91adbb}
+.life-shell-head{color:var(--dark-subtle)}
+.life-shell-readout span{color:var(--dark-subtle)}
+.life-shell-foot span{color:var(--dark-subtle)}
+.concept-label{color:#91adbb}
+.life-stage-kicker{color:var(--dark-subtle)}
+.life-stage-readout small{color:var(--dark-subtle)}
+.life-stage-axis{color:#91adbb}
+.runtime-label{color:var(--dark-subtle)}
+.runtime-event{color:var(--dark-subtle)}
+.runtime-side-note{color:var(--dark-subtle)}
+
+/* Cinematic journey labels were especially faint at 7–11px. */
+.journey-topline,
+.journey-bottomline{color:var(--dark-subtle)}
+.journey-copy p,
+.journey-copy-static>p{color:var(--dark-muted)}
+.capability-rail span{color:#91adbb}
+.journey-live-readout small{color:#91adbb}
+.journey-live-readout p{color:var(--dark-subtle)}
+
+/* Footer small text must remain readable against #020a12. */
+.footer-brand p{color:var(--dark-subtle)}
+.footer h4{color:#91adbb}
+.footer-bottom{color:var(--dark-subtle)}
