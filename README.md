@@ -2,7 +2,7 @@
 
 **We build. We learn. We evolve — toward a better future.**
 
-AURYVETH is a technology and research company developing **governed digital business organisms**: persistent digital systems designed to learn an organization’s approved operational context, prepare and coordinate work, and progressively earn bounded autonomy under explicit human authority.
+AURYVETH is a technology and research company developing **governed digital life organisms**: persistent digital systems designed to learn, evolve and build in an organization’s approved operational context, prepare and coordinate work, and progressively earn bounded autonomy under explicit human authority.
 
 This repository is the source for AURYVETH’s official public website.
 
@@ -11,10 +11,11 @@ This repository is the source for AURYVETH’s official public website.
 - **Official website:** https://auryveth.github.io/
 - **Official GitHub organization:** https://github.com/auryveth
 - **Founder:** Jeremiah Wong Zhi Qi
-- **Founded:** 2026-09-23
 - **Primary field:** governed digital business organisms and autonomous business systems
 
 ## Core concepts
+
+AURYVETH uses **digital organism** to describe a persistent digital life that build, learn, and evolve as time accumulate.
 
 AURYVETH uses **business organism** to describe a persistent digital operating system that maintains approved business context across workflows and operational cycles instead of behaving only as an isolated task agent.
 
@@ -44,4 +45,4 @@ When sponsorship is enabled, use the **Sponsor** button shown on this repository
 ---
 
 **AURYVETH**  
-Governed autonomy. Persistent learning. Human authority.
+Governed autonomy. Persistent learning. Human authority. Better future.
