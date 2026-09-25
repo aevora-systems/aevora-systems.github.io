@@ -577,45 +577,186 @@ document.addEventListener('visibilitychange',()=>{
   if(document.hidden) auryvethStarfield?.stop(); else auryvethStarfield?.setMotion(motionEnabled);
 });
 
-// Continuous scroll scrubbing. The visual changes continuously; only the small
-// semantic readout names the nearest development emphasis.
+// Scroll-driven organism showcase.
+// The organism itself remains the existing canvas renderer; the surrounding
+// public-safe explanation moves through four chapters without exposing internals.
 const journey=document.querySelector('[data-organism-journey]');
 if(journey){
   const scene=journey.querySelector('[data-organism-canvas="journey"]')?._livingOrganism;
   const bar=journey.querySelector('[data-journey-progress]');
   const percent=journey.querySelector('[data-journey-percent]');
-  const phaseEl=journey.querySelector('[data-journey-phase]');
-  const detailEl=journey.querySelector('[data-journey-detail]');
-  const capabilityEls=Array.from(journey.querySelectorAll('[data-capability]'));
-  const phases=[
-    ['Sense','Approved business signals enter the organism.'],
-    ['Remember','Relevant context persists beyond a single interaction.'],
-    ['Reason','Evidence and constraints become decision-ready work.'],
-    ['Govern','Capability grows while authority remains explicitly bounded.'],
-    ['Coordinate','Independent organisms can exchange bounded requests and commitments.']
+  const chapterIndexEl=journey.querySelector('[data-journey-chapter-index]');
+  const eyebrowEl=journey.querySelector('[data-journey-eyebrow]');
+  const titleEl=journey.querySelector('[data-journey-title]');
+  const bodyEl=journey.querySelector('[data-journey-body]');
+  const noteLabelEl=journey.querySelector('[data-journey-note-label]');
+  const noteTitleEl=journey.querySelector('[data-journey-note-title]');
+  const noteBodyEl=journey.querySelector('[data-journey-note-body]');
+  const scrollHint=journey.querySelector('[data-journey-scroll-hint]');
+  const diagram=journey.querySelector('[data-journey-diagram]');
+  const chapterTabs=Array.from(journey.querySelectorAll('[data-journey-chapter-tab]'));
+  const callouts=Array.from(journey.querySelectorAll('[data-journey-callout]'));
+  const lines=Array.from(journey.querySelectorAll('[data-journey-line]'));
+
+  const chapters=[
+    {
+      key:'continuity',
+      eyebrow:'Persistent digital life',
+      title:'Intelligence should accumulate, not restart.',
+      body:'The organism is designed to preserve continuity as the organization changes, reorganize internal connections as new evidence arrives, and convert approved signals into durable operational memory under explicit authority.',
+      noteLabel:'opening principle',
+      noteTitle:'Continuity before autonomy',
+      noteBody:'The same living operating layer remains present as experience, context and evidence accumulate.',
+      callouts:[
+        ['Sense','Approved signals enter through trusted sources.'],
+        ['Remember','Relevant context persists across interactions.'],
+        ['Govern','Consequential action remains inside explicit authority.'],
+        ['Coordinate','Bounded work moves across approved systems and roles.'],
+        ['Reason','Evidence and constraints become decision-ready context.']
+      ]
+    },
+    {
+      key:'layer',
+      eyebrow:'Organism layer',
+      title:'One organism layer. Five coordinated functions.',
+      body:'The organism layer senses approved inputs, remembers continuity, reasons over context, governs action boundaries, and coordinates bounded work. These functions operate together as one persistent system rather than as isolated task sessions.',
+      noteLabel:'organism layer',
+      noteTitle:'Five functions, one continuity',
+      noteBody:'The callouts describe public-facing responsibilities, not confidential internal implementation.',
+      callouts:[
+        ['Sense','Ingests approved signals from trusted sources.'],
+        ['Remember','Preserves relevant context across interactions.'],
+        ['Govern','Keeps consequential action inside explicit authority.'],
+        ['Coordinate','Routes bounded work across approved systems and roles.'],
+        ['Reason','Evaluates evidence and constraints within context.']
+      ]
+    },
+    {
+      key:'lifecycle',
+      eyebrow:'Governed life cycle',
+      title:'One organism. A governed life cycle.',
+      body:'A digital organism develops through continuity: it begins with a bounded purpose, accumulates approved experience, stabilizes through evidence, operates within demonstrated capability, and evolves without silently expanding its authority.',
+      noteLabel:'public life-cycle model',
+      noteTitle:'Development remains governed',
+      noteBody:'Lifecycle stages describe observable progression without disclosing private architecture or research mechanics.',
+      callouts:[
+        ['Initiate','Begins with a defined purpose, scope and authority boundary.'],
+        ['Learn','Accumulates approved experience and outcome evidence.'],
+        ['Stabilize','Preserves continuity while behavior becomes more reliable.'],
+        ['Evolve','Adapts within governance as evidence supports improvement.'],
+        ['Operate','Performs bounded work within demonstrated capability.']
+      ]
+    },
+    {
+      key:'capability',
+      eyebrow:'Capability horizon',
+      title:'Capability grows under explicit authority.',
+      body:'The organism can understand approved context, retain continuity, prepare decision-ready work, coordinate bounded workflows, and improve through accumulated outcomes while consequential authority remains separately granted.',
+      noteLabel:'public capability horizon',
+      noteTitle:'More capable does not mean more authorized',
+      noteBody:'The view intentionally describes bounded outcomes and avoids confidential mechanisms or unvalidated claims.',
+      callouts:[
+        ['Understand approved context','Interprets organizational knowledge within explicit authority.'],
+        ['Retain continuity','Preserves context across interactions to maintain coherent progress.'],
+        ['Prepare decision-ready work','Synthesizes insights into structured, verifiable outputs.'],
+        ['Improve through outcomes','Learns from results to increase effectiveness over time.'],
+        ['Coordinate bounded workflows','Supports multi-step work within defined guardrails.']
+      ]
+    }
   ];
+
+  let activeChapter=-1;
   let queued=false;
+
+  function animateMorph(el){
+    if(!el||!motionEnabled||typeof el.animate!=='function') return;
+    el.animate(
+      [
+        {opacity:.12,transform:'translateY(9px)',filter:'blur(4px)'},
+        {opacity:1,transform:'translateY(0)',filter:'blur(0)'}
+      ],
+      {duration:430,easing:'cubic-bezier(.2,.75,.25,1)'}
+    );
+  }
+
+  function renderChapter(index){
+    if(index===activeChapter) return;
+    activeChapter=index;
+    const chapter=chapters[index];
+    journey.dataset.journeyChapter=chapter.key;
+    if(chapterIndexEl) chapterIndexEl.textContent=String(index+1).padStart(2,'0');
+    if(eyebrowEl){eyebrowEl.textContent=chapter.eyebrow;animateMorph(eyebrowEl);}
+    if(titleEl){titleEl.textContent=chapter.title;animateMorph(titleEl);}
+    if(bodyEl){bodyEl.textContent=chapter.body;animateMorph(bodyEl);}
+    if(noteLabelEl) noteLabelEl.textContent=chapter.noteLabel;
+    if(noteTitleEl){noteTitleEl.textContent=chapter.noteTitle;animateMorph(noteTitleEl);}
+    if(noteBodyEl){noteBodyEl.textContent=chapter.noteBody;animateMorph(noteBodyEl);}
+
+    chapterTabs.forEach((el,i)=>{
+      el.classList.toggle('is-current',i===index);
+      el.classList.toggle('is-passed',i<index);
+    });
+
+    callouts.forEach((el,i)=>{
+      const data=chapter.callouts[i];
+      const title=el.querySelector('[data-callout-title]');
+      const body=el.querySelector('[data-callout-body]');
+      if(title){title.textContent=data[0];animateMorph(title);}
+      if(body){body.textContent=data[1];animateMorph(body);}
+    });
+  }
+
   function syncJourney(){
     queued=false;
     const rect=journey.getBoundingClientRect();
     const travel=Math.max(1,journey.offsetHeight-innerHeight);
     const p=clamp(-rect.top/travel);
     scene?.setProgress(p);
-    if(bar)bar.style.transform=`scaleX(${p})`;
-    if(percent)percent.textContent=`${String(Math.round(p*100)).padStart(2,'0')}%`;
-    const phaseIndex=Math.min(phases.length-1,Math.max(0,Math.floor(p*phases.length)));
-    if(phaseEl)phaseEl.textContent=phases[phaseIndex][0];
-    if(detailEl)detailEl.textContent=phases[phaseIndex][1];
-    capabilityEls.forEach((el,i)=>{
-      el.classList.toggle('is-current',i===phaseIndex);
-      el.classList.toggle('is-passed',i<phaseIndex);
-      // A continuous local intensity keeps the rail from behaving like a slide selector.
-      const center=(i+.5)/phases.length;
-      const proximity=clamp(1-Math.abs(p-center)*phases.length);
-      el.style.setProperty('--phase-energy',proximity.toFixed(3));
+    if(bar) bar.style.transform=`scaleX(${p})`;
+    if(percent) percent.textContent=`${String(Math.round(p*100)).padStart(2,'0')}%`;
+
+    const chapterFloat=p*chapters.length;
+    const chapterIndex=Math.min(chapters.length-1,Math.max(0,Math.floor(chapterFloat)));
+    const local=chapterIndex===chapters.length-1
+      ? clamp((p-(chapters.length-1)/chapters.length)*chapters.length)
+      : clamp(chapterFloat-chapterIndex);
+    renderChapter(chapterIndex);
+
+    // Lines grow out of the existing organism in the opening chapter, then
+    // remain as the shared diagram scaffold. Individual labels energize in
+    // sequence as each later chapter is explored.
+    const openingReveal=chapterIndex===0
+      ? smooth(clamp((local-.08)/.72))
+      : 1;
+    if(diagram){
+      diagram.style.setProperty('--diagram-reveal',openingReveal.toFixed(3));
+      diagram.style.setProperty('--chapter-local',local.toFixed(3));
+    }
+    lines.forEach((line,i)=>{
+      const reveal=chapterIndex===0
+        ? smooth(clamp((local-.08-i*.075)/.58))
+        : 1;
+      line.style.setProperty('--line-reveal',reveal.toFixed(3));
     });
+    callouts.forEach((el,i)=>{
+      const reveal=chapterIndex===0
+        ? smooth(clamp((local-.22-i*.07)/.50))
+        : 1;
+      const focus=chapterIndex===0
+        ? reveal
+        : clamp(1-Math.abs(local-(i+.5)/callouts.length)*callouts.length*.72);
+      el.style.setProperty('--callout-reveal',reveal.toFixed(3));
+      el.style.setProperty('--callout-focus',focus.toFixed(3));
+      el.classList.toggle('is-emphasized',chapterIndex>0 && focus>.58);
+    });
+
+    if(scrollHint) scrollHint.textContent=p>.965?'continue below':'scroll to transform';
   }
-  function queueJourney(){if(queued)return;queued=true;requestAnimationFrame(syncJourney);}
+  function queueJourney(){
+    if(queued)return;
+    queued=true;
+    requestAnimationFrame(syncJourney);
+  }
   window.addEventListener('scroll',queueJourney,{passive:true});
   window.addEventListener('resize',queueJourney,{passive:true});
   syncJourney();

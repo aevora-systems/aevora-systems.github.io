@@ -862,3 +862,274 @@ body.motion-reduced .journey-topline i{animation-play-state:paused!important}
   .journey-live-readout{margin-top:13px;padding:9px 12px}
   .journey-bottomline{bottom:16px}
 }
+
+
+/* =========================================================
+   AURYVETH v1.0.0 — organism showcase
+   Scroll-driven field guide using the existing living organism renderer.
+   ========================================================= */
+.organism-showcase{height:680vh}
+.organism-showcase .journey-sticky{
+  background:
+    radial-gradient(circle at 69% 47%,rgba(30,224,230,.105),transparent 25%),
+    radial-gradient(circle at 72% 45%,rgba(19,104,174,.10),transparent 41%),
+    linear-gradient(180deg,rgba(1,7,13,.88),rgba(2,15,25,.92) 56%,rgba(1,8,14,.94));
+}
+.organism-showcase .journey-grid{
+  background-image:
+    radial-gradient(circle at 69% 47%,rgba(111,231,238,.055) 0 1px,transparent 1px),
+    linear-gradient(rgba(111,231,238,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(111,231,238,.018) 1px,transparent 1px);
+  background-size:150px 150px,56px 56px,56px 56px;
+  mask-image:linear-gradient(90deg,transparent 0,#000 34%,#000 100%);
+}
+.organism-showcase .journey-topline{z-index:11}
+.organism-showcase .journey-topline b{color:#aefbff;font:inherit}
+.organism-showcase .journey-copy-static{
+  z-index:12;
+  width:min(40vw,610px);
+  top:48%;
+}
+.organism-showcase .journey-copy-static .eyebrow{
+  display:inline-flex;
+  align-items:center;
+  min-height:18px;
+  color:#62eef3;
+}
+.organism-showcase .journey-copy-static h2{
+  margin:14px 0 20px;
+  font-size:clamp(43px,4.65vw,72px);
+  line-height:1.0;
+  max-width:620px;
+}
+.organism-showcase .journey-copy-static>p{
+  min-height:8.5em;
+  max-width:590px;
+  color:#b7cbd5;
+  font-size:clamp(14px,1.14vw,18px);
+  line-height:1.64;
+}
+.journey-chapter-rail{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:20px;
+}
+.journey-chapter-rail span{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 10px;
+  border:1px solid rgba(111,229,236,.10);
+  border-radius:999px;
+  background:rgba(4,20,31,.46);
+  color:#8daab8;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  transition:.32s ease;
+}
+.journey-chapter-rail span i{
+  width:5px;height:5px;border-radius:50%;
+  background:#456c79;transition:.32s ease;
+}
+.journey-chapter-rail span.is-current{
+  color:#edffff;
+  border-color:rgba(104,240,246,.34);
+  background:rgba(52,219,228,.10);
+  box-shadow:0 0 28px rgba(52,219,228,.055);
+}
+.journey-chapter-rail span.is-current i{
+  background:#75f6fb;box-shadow:0 0 12px rgba(117,246,251,.85);
+}
+.journey-chapter-rail span.is-passed{color:#a4c1cc;border-color:rgba(111,229,236,.16)}
+.journey-stage-note{
+  max-width:530px;
+  margin-top:18px;
+  padding:11px 14px;
+  border-left:1px solid rgba(103,235,242,.32);
+  background:linear-gradient(90deg,rgba(34,181,195,.055),transparent);
+}
+.journey-stage-note small{
+  display:block;color:#91adbb;font-size:8px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+}
+.journey-stage-note strong{
+  display:block;margin:4px 0 2px;color:#bffcff;font-size:14px;
+}
+.journey-stage-note p{
+  margin:0;color:#9fb9c6;font-size:10px;line-height:1.48;
+}
+
+/* Diagram occupies only the organism half; the existing canvas remains underneath. */
+.journey-diagram{
+  --diagram-reveal:0;
+  position:absolute;
+  z-index:10;
+  left:45%;
+  right:-2%;
+  top:9%;
+  bottom:9%;
+  pointer-events:none;
+}
+.journey-callout-lines{
+  position:absolute;inset:0;width:100%;height:100%;
+  overflow:visible;
+  opacity:calc(.18 + var(--diagram-reveal) * .82);
+}
+.journey-callout-lines path{
+  fill:none;
+  stroke:rgba(111,244,249,.76);
+  stroke-width:1.15;
+  vector-effect:non-scaling-stroke;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:1;
+  stroke-dashoffset:calc(1 - var(--line-reveal,0));
+  filter:drop-shadow(0 0 5px rgba(89,237,243,.22));
+}
+.journey-callout-lines path::after{content:""}
+
+.journey-callout{
+  --callout-reveal:0;
+  --callout-focus:0;
+  position:absolute;
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr);
+  gap:9px;
+  width:min(220px,19vw);
+  padding:8px 9px;
+  border-radius:12px;
+  background:linear-gradient(90deg,rgba(2,13,22,.78),rgba(2,13,22,.30));
+  border:1px solid rgba(113,229,236,calc(.08 + var(--callout-focus) * .14));
+  opacity:var(--callout-reveal);
+  transform:translateY(calc((1 - var(--callout-reveal)) * 9px));
+  backdrop-filter:blur(8px);
+  transition:border-color .2s ease,background .2s ease,box-shadow .2s ease;
+}
+.journey-callout.is-emphasized{
+  background:linear-gradient(90deg,rgba(11,54,66,.62),rgba(2,13,22,.34));
+  box-shadow:0 0 28px rgba(68,225,232,.055);
+}
+.journey-callout-node{
+  width:22px;height:22px;border-radius:50%;
+  display:grid;place-items:center;
+  border:1px solid rgba(105,240,246,.32);
+  background:rgba(10,50,62,.64);
+  box-shadow:0 0 16px rgba(87,232,239,.10);
+}
+.journey-callout-node i{
+  width:6px;height:6px;border-radius:50%;
+  background:#72f4f9;box-shadow:0 0 12px rgba(114,244,249,.9);
+}
+.journey-callout strong{
+  display:block;
+  color:#eafcfe;
+  font-size:9px;
+  line-height:1.25;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.journey-callout p{
+  margin:3px 0 0;
+  color:#a7bfca;
+  font-size:8px;
+  line-height:1.38;
+}
+.journey-callout.slot-a{left:4%;top:15%}
+.journey-callout.slot-b{right:0;top:15%}
+.journey-callout.slot-c{right:-1%;top:43%}
+.journey-callout.slot-d{right:1%;bottom:12%}
+.journey-callout.slot-e{left:4%;bottom:12%}
+
+/* Chapter-specific accent only; organism is always the original renderer. */
+.organism-showcase[data-journey-chapter="layer"] .journey-callout-node{
+  border-color:rgba(98,238,243,.48)
+}
+.organism-showcase[data-journey-chapter="lifecycle"] .journey-callout-node{
+  border-style:dashed
+}
+.organism-showcase[data-journey-chapter="capability"] .journey-callout strong{
+  color:#bffcff
+}
+.organism-showcase[data-journey-chapter="capability"] .journey-callout{
+  border-color:rgba(113,229,236,.18)
+}
+
+.organism-showcase .journey-bottomline{
+  z-index:12;
+  color:#9eb8c5;
+}
+.organism-showcase .journey-progress{
+  background:rgba(117,226,233,.11);
+}
+
+/* Short desktop safe zones: keep the copy between the HUD rails. */
+@media (min-width:1041px) and (max-height:920px){
+  .organism-showcase .journey-copy-static{
+    top:48%;
+    width:min(39vw,590px);
+  }
+  .organism-showcase .journey-copy-static h2{
+    margin:10px 0 14px;
+    font-size:clamp(38px,4vw,58px);
+  }
+  .organism-showcase .journey-copy-static>p{
+    min-height:7.3em;
+    font-size:14px;
+    line-height:1.52;
+  }
+  .journey-chapter-rail{margin-top:14px}
+  .journey-stage-note{margin-top:12px;padding:8px 12px}
+  .journey-stage-note p{font-size:9px}
+  .journey-diagram{top:10%;bottom:10%;left:44%}
+  .journey-callout{width:min(205px,19vw);padding:7px 8px}
+}
+@media (min-width:821px) and (max-width:1040px){
+  .organism-showcase .journey-copy-static{width:min(46vw,500px);top:49%}
+  .organism-showcase .journey-copy-static h2{font-size:clamp(36px,5vw,54px)}
+  .organism-showcase .journey-copy-static>p{min-height:8em;font-size:14px;line-height:1.52}
+  .journey-diagram{left:47%;right:-8%}
+  .journey-callout{width:190px}
+  .journey-callout p{font-size:7.5px}
+}
+@media(max-width:820px){
+  .organism-showcase{height:600vh}
+  .organism-showcase .journey-copy-static{
+    left:4px;right:4px;top:auto;bottom:78px;transform:none;
+    width:auto;padding-right:0;
+  }
+  .organism-showcase .journey-copy-static .eyebrow{font-size:9px}
+  .organism-showcase .journey-copy-static h2{
+    margin:8px 0 10px;
+    font-size:clamp(30px,8vw,48px);
+    max-width:680px;
+  }
+  .organism-showcase .journey-copy-static>p{
+    min-height:0;
+    max-width:680px;
+    font-size:13px;
+    line-height:1.48;
+  }
+  .journey-chapter-rail{margin-top:12px;gap:5px}
+  .journey-chapter-rail span{padding:6px 8px;font-size:7px}
+  .journey-stage-note{margin-top:10px;padding:8px 10px}
+  .journey-stage-note p{display:none}
+  .journey-diagram{display:none}
+  .organism-showcase .journey-fallback{left:57%;top:32%;width:min(63vw,410px)}
+  .organism-showcase .journey-topline{top:86px}
+  .organism-showcase .journey-bottomline{bottom:22px}
+  .organism-showcase .journey-bottomline>span:first-child{display:none}
+}
+@media(max-width:560px){
+  .organism-showcase{height:560vh}
+  .organism-showcase .journey-copy-static{bottom:70px}
+  .organism-showcase .journey-copy-static h2{font-size:clamp(28px,8.8vw,42px)}
+  .organism-showcase .journey-copy-static>p{font-size:12px;line-height:1.43}
+  .journey-chapter-rail span{font-size:6.5px;padding:6px 7px}
+  .journey-stage-note strong{font-size:12px}
+  .organism-showcase .journey-bottomline{left:4px;right:4px}
+}
+@media(prefers-reduced-motion:reduce){
+  .journey-callout,.journey-chapter-rail span{transition:none!important}
+}
