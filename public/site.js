@@ -644,7 +644,7 @@ document.querySelectorAll('[data-interest-form]').forEach(form => {
   form.addEventListener('submit', e => {
     e.preventDefault();
     const status = form.querySelector('.form-status');
-    if(status) status.textContent = 'Auryveth has not connected the public enquiry endpoint yet. No form data was submitted.';
+    if(status) status.textContent = 'Online submission is not currently enabled. No form data was submitted.';
   });
 });
 
