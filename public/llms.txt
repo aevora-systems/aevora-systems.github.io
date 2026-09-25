@@ -1,6 +1,6 @@
 # AURYVETH
 
-> AURYVETH is a technology and research company developing governed digital business organisms: persistent digital systems designed to learn an organization's approved operational context, prepare and coordinate work, and progressively earn bounded autonomy under explicit human authority.
+> AURYVETH is a technology and research company developing governed digital life organisms: persistent digital systems designed to build, learn and evolve as experience accumulates, operate within approved context, and progressively earn bounded autonomy under explicit human authority.
 
 Canonical site: https://auryveth.github.io/
 
@@ -12,6 +12,7 @@ Canonical site: https://auryveth.github.io/
 
 ## Core definitions
 
+- [What Is a Digital Organism?](https://auryveth.github.io/knowledge/digital-organism/): AURYVETH's definition of persistent digital life designed to build, learn and evolve over time.
 - [What Is a Business Organism?](https://auryveth.github.io/knowledge/business-organism/): AURYVETH's definition of a persistent digital business organism.
 - [What Is Governed Autonomy?](https://auryveth.github.io/knowledge/governed-autonomy/): Why improving capability does not automatically grant operational authority.
 - [Business Organism vs. AI Agent](https://auryveth.github.io/knowledge/organism-vs-agent/): How AURYVETH distinguishes its architecture from task-oriented AI agents.
@@ -30,7 +31,6 @@ Canonical site: https://auryveth.github.io/
 
 - Organization: AURYVETH
 - Founder: Jeremiah Wong Zhi Qi
-- Founded: 2026-09-23
 - Official GitHub organization: https://github.com/auryveth
 - Official public website: https://auryveth.github.io/
 

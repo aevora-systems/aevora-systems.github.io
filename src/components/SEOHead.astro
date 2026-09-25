@@ -24,9 +24,10 @@ const founder = {
 const organization = {
   '@type':'Organization', '@id':brandId,
   name:site.name, url:home, logo:new URL(site.logo, origin).href,
-  description:site.description, foundingDate:site.foundingDate,
+  description:site.description,
   founder:{'@id':founderId}, sameAs:[site.github],
   knowsAbout:[
+    {'@id':new URL('/knowledge/digital-organism/#term',origin).href},
     {'@id':new URL('/knowledge/business-organism/#term',origin).href},
     {'@id':new URL('/knowledge/governed-autonomy/#term',origin).href}
   ]
@@ -38,7 +39,7 @@ const website = {
 };
 const socialImageObject = {
   '@type':'ImageObject', '@id':socialImageId, url:socialImage, contentUrl:socialImage,
-  width:1200, height:630, caption:'AURYVETH — governed digital business organisms'
+  width:1200, height:630, caption:'AURYVETH — governed digital life organisms'
 };
 const mainEntity = schema.find(node => ['DefinedTerm','DefinedTermSet','DigitalDocument'].includes(String(node['@type'])));
 const pageSchema = {
@@ -48,7 +49,7 @@ const pageSchema = {
   ...(mainEntity ? {mainEntity:{'@id':mainEntity['@id'] || canonical+'#term'}} : {})
 };
 const labels:Record<string,string> = {
-  knowledge:'Knowledge', 'business-organism':'Business organism',
+  knowledge:'Knowledge', 'digital-organism':'Digital organism', 'business-organism':'Business organism',
   'governed-autonomy':'Governed autonomy', 'organism-vs-agent':'Organism vs. agent',
   'authority-levels':'Authority levels', 'internal-proving-ground':'Internal proving ground'
 };
@@ -63,11 +64,9 @@ const breadcrumb = segments.length && !noindex ? {
     }))
   ]
 } : null;
-// One coherent first-party graph: all entities refer to stable IDs and public content.
-// Avoid fake credentials, customer results, FAQs, reviews or success metrics.
 const nodes=[organization,founder,website,socialImageObject,pageSchema,...schema.map(({['@context']: _context,...node})=>node),...(breadcrumb?[breadcrumb]:[])];
 const graph = {'@context':'https://schema.org','@graph':nodes};
-const graphJson = JSON.stringify(graph).replace(/</g,'\\u003c');
+const graphJson = JSON.stringify(graph).replace(/</g,'\u003c');
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -87,14 +86,14 @@ const graphJson = JSON.stringify(graph).replace(/</g,'\\u003c');
 <meta property="og:image" content={socialImage} />
 <meta property="og:image:secure_url" content={socialImage} />
 <meta property="og:image:type" content="image/jpeg" />
-<meta property="og:image:alt" content="AURYVETH — governed digital business organisms" />
+<meta property="og:image:alt" content="AURYVETH — governed digital life organisms" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={socialImage} />
-<meta name="twitter:image:alt" content="AURYVETH — governed digital business organisms" />
+<meta name="twitter:image:alt" content="AURYVETH — governed digital life organisms" />
 <link rel="icon" href="/assets/favicons/favicon.ico" sizes="any" />
 <link rel="icon" href="/assets/favicons/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />

@@ -3,8 +3,7 @@ export const site = {
   name: 'AURYVETH',
   url: 'https://auryveth.github.io',
   tagline: 'We build. We learn. We evolve — toward a better future.',
-  description: 'AURYVETH develops governed digital business organisms: persistent systems that learn approved operations and earn bounded autonomy under explicit human authority.',
-  foundingDate: '2026-09-23',
+  description: 'AURYVETH develops governed digital life organisms: persistent systems designed to build, learn and evolve as experience accumulates, while earning bounded autonomy under explicit human authority.',
   founder: 'Jeremiah Wong Zhi Qi',
   github: 'https://github.com/auryveth',
   logo: '/assets/logos/Auryveth_Logo_Horizontal_Corporate.svg',
@@ -14,14 +13,14 @@ export const site = {
 
 export const pages = {
   "home": {
-    "title": "AURYVETH — Governed Digital Business Organisms",
-    "description": "AURYVETH develops governed digital business organisms that learn approved operations, coordinate work, and earn bounded autonomy under explicit human authority.",
+    "title": "AURYVETH — Governed Digital Life Organisms",
+    "description": "AURYVETH develops governed digital life organisms designed to build, learn and evolve over time, with bounded autonomy under explicit human authority.",
     "path": "/",
     "nav": "home"
   },
   "about": {
-    "title": "About AURYVETH — Digital Business Organisms",
-    "description": "Meet AURYVETH and its founder, Jeremiah Wong Zhi Qi. AURYVETH is building persistent digital business organisms and governed autonomous systems.",
+    "title": "About AURYVETH — Governed Digital Life Organisms",
+    "description": "Meet AURYVETH and its founder, Jeremiah Wong Zhi Qi. AURYVETH is developing governed digital life organisms, business organisms and autonomous business systems.",
     "path": "/about/",
     "nav": "about"
   },
@@ -72,6 +71,7 @@ export const pages = {
 // Every entry below must have a real, prerendered public page. The build audit compares
 // this registry to the generated HTML and sitemap; never add speculative URLs.
 export const knowledgePages = {
+  'digital-organism': { title: 'What Is a Digital Organism? — AURYVETH', description: 'AURYVETH’s definition of persistent digital life designed to build, learn and evolve as experience accumulates under explicit governance.' },
   'business-organism': { title: 'What Is a Business Organism? — AURYVETH', description: 'AURYVETH’s definition of a persistent digital business organism, its scope, its intended continuity and its authority boundaries.' },
   'governed-autonomy': { title: 'What Is Governed Autonomy? — AURYVETH', description: 'Why better capabilities do not confer permission: AURYVETH’s definition of explicitly granted, bounded operational authority.' },
   'organism-vs-agent': { title: 'Business Organism vs. AI Agent — AURYVETH', description: 'How AURYVETH distinguishes its persistent business-organism architecture from task-oriented AI agent systems, without claiming current autonomy.' },
@@ -82,6 +82,6 @@ export const knowledgePages = {
 export const indexedPaths = [
   '/', '/organisms/', '/research/', '/roadmap/', '/constitution/',
   '/investors/', '/about/', '/pilot/', '/privacy/',
-  '/knowledge/', '/knowledge/business-organism/', '/knowledge/governed-autonomy/',
+  '/knowledge/', '/knowledge/digital-organism/', '/knowledge/business-organism/', '/knowledge/governed-autonomy/',
   '/knowledge/organism-vs-agent/', '/knowledge/authority-levels/', '/knowledge/internal-proving-ground/'
 ] as const;

@@ -4,7 +4,7 @@ import path from 'node:path';
 const root = path.resolve('dist');
 const origin = (process.env.PUBLIC_SITE_URL || 'https://auryveth.github.io').replace(/\/$/, '');
 const expected = ['/', '/about/', '/organisms/', '/research/', '/roadmap/', '/constitution/', '/investors/', '/pilot/', '/privacy/',
-  '/knowledge/', '/knowledge/business-organism/', '/knowledge/governed-autonomy/', '/knowledge/organism-vs-agent/',
+  '/knowledge/', '/knowledge/digital-organism/', '/knowledge/business-organism/', '/knowledge/governed-autonomy/', '/knowledge/organism-vs-agent/',
   '/knowledge/authority-levels/', '/knowledge/internal-proving-ground/'];
 function read(file) {
   const full = path.join(root,file);
@@ -43,6 +43,8 @@ for(const route of expected){
   if(breadcrumb && breadcrumb.itemListElement.at(-1).item!==canonical)throw Error(`Breadcrumb target mismatch: ${route}`);
   if(!html.includes('property="og:image:alt"'))throw Error(`Missing social image description: ${route}`);
   if(!html.includes('property="og:image:type" content="image/jpeg"'))throw Error(`Missing social image type: ${route}`);
+  if((html.match(/class="nav-group"/g)||[]).length!==3)throw Error(`Grouped navigation missing or duplicated: ${route}`);
+  for(const category of ['Home','Research','Products','About'])if(!html.includes(category))throw Error(`Primary navigation category ${category} missing: ${route}`);
   // Check local links against generated pages and files, not a guessed route list.
   for(const match of html.matchAll(/<(?:a|img|script|link)\b[^>]*?\b(?:href|src)="([^"]+)"/gi)){
     const href=match[1];
@@ -66,6 +68,7 @@ if(!robots.includes(`Sitemap: ${origin}/sitemap.xml`))throw Error('robots.txt po
 if(!robots.includes('Disallow: /diagnostics/'))throw Error('Diagnostic page not excluded from crawl');
 if(!robots.includes('OAI-SearchBot'))throw Error('Missing intended search-bot access');
 const llms=read('llms.txt');
+if(!llms.includes(`${origin}/knowledge/digital-organism/`))throw Error('llms.txt missing canonical digital-organism URL');
 if(!llms.includes(`${origin}/knowledge/business-organism/`))throw Error('llms.txt missing canonical business-organism URL');
 if(!llms.includes('Interpretation and evidence boundary'))throw Error('llms.txt missing evidence boundary');
 for(const file of allFiles(root).filter(f=>/\.(?:html|xml|txt|json)$/i.test(f))){

@@ -6,7 +6,7 @@ for(const page of pages){
  if(!fs.existsSync(`src/pages/${page}.astro`))throw Error(`Missing Astro page ${page}`);
  if(!fs.existsSync(`src/content/pages/${page}.html`))throw Error(`Missing page body ${page}`);
 }
-for(const slug of ['business-organism','governed-autonomy','organism-vs-agent','authority-levels','internal-proving-ground']){
+for(const slug of ['digital-organism','business-organism','governed-autonomy','organism-vs-agent','authority-levels','internal-proving-ground']){
  if(!fs.existsSync(`src/pages/knowledge/${slug}.astro`))throw Error(`Missing knowledge route ${slug}`);
  if(!fs.existsSync(`src/content/pages/knowledge-${slug}.html`))throw Error(`Missing knowledge content ${slug}`);
 }
@@ -28,6 +28,7 @@ if(!src.includes('auryveth.github.io'))throw Error('Wrong AURYVETH GitHub Pages 
 if(!src.includes("name: 'AURYVETH'"))throw Error('Public brand not switched to AURYVETH');
 if(src.includes('hello@'))throw Error('Invented email');
 const llms=fs.readFileSync('public/llms.txt','utf8');
+if(!llms.includes('https://auryveth.github.io/knowledge/digital-organism/'))throw Error('llms.txt missing canonical digital-organism definition');
 if(!llms.includes('https://auryveth.github.io/knowledge/business-organism/'))throw Error('llms.txt missing canonical business-organism definition');
 if(!llms.includes('Interpretation and evidence boundary'))throw Error('llms.txt missing evidence boundary');
 
@@ -46,4 +47,8 @@ for(const file of ['src/components/SEOHead.astro','src/content/pages/knowledge-i
  const t=fs.readFileSync(file,'utf8');
  if(!t.includes('Business')&&!t.includes('business'))throw Error(`Suspect empty content: ${file}`);
 }
-console.log('PASS source: AURYVETH naming, core pages, 5 knowledge pages, brand sources and AURYVETH origin');
+const header=fs.readFileSync('src/components/Header.astro','utf8');
+for(const label of ['Home','Research','Products','About'])if(!header.includes(`>${label}<`) && !header.includes(`>${label}</span>`))throw Error(`Missing primary navigation category: ${label}`);
+if((header.match(/class="nav-group"/g)||[]).length!==3)throw Error('Expected exactly three grouped dropdowns plus Home');
+if(!header.includes('/knowledge/digital-organism/'))throw Error('Navigation missing digital-organism route');
+console.log('PASS source: AURYVETH naming, core pages, 6 knowledge pages, grouped navigation, brand sources and AURYVETH origin');
