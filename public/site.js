@@ -715,3 +715,8 @@ if(nav){
     if(normalized === currentPath) a.classList.add('current');
   });
 }
+
+document.addEventListener('pointerdown', e => {
+  if(desktopNavQuery.matches && nav && !nav.contains(e.target)) closeNavGroups();
+});
+desktopNavQuery.addEventListener?.('change', () => closeNavGroups());
